@@ -1,0 +1,97 @@
+---
+import type { Locale } from '../../i18n/types';
+import { useTranslations, localisePath } from '../../i18n';
+import Icon from '../Icon.astro';
+import PlaceholderImage from '../PlaceholderImage.astro';
+import { getCollection } from 'astro:content';
+
+interface Props { locale: Locale; }
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+
+const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+---
+<section id="projects" class="projects">
+  <div class="container-page">
+    <h2 class="section-title">{t.projects.title}</h2>
+    <div class="grid reveal">
+      {projects.map((p, i) => (
+        <article class="card">
+          <a href={localisePath(`/projects/${p.data.slug}/`, locale)} class="card-media" aria-label={p.data.title}>
+            <PlaceholderImage label={p.data.title} ratio="4 / 3" />
+          </a>
+          <div class="card-body">
+            <h3>{p.data.title}</h3>
+            <p>{t.projects.description}</p>
+            <ul class="check-list">
+              {t.projects.scope.map((s) => (<li>{s}</li>))}
+            </ul>
+            <a href={localisePath(`/projects/${p.data.slug}/`, locale)} class="link-cta">
+              <span>{t.projects.view}</span>
+              <Icon name="arrow-right" size={16} strokeWidth={1.8} />
+            </a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .projects {
+    padding: 5rem 0;
+    background: var(--color-surface-50);
+    border-bottom: 1px solid var(--color-line-200);
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  @media (min-width: 48rem) {
+    .grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (min-width: 72rem) {
+    .grid { grid-template-columns: repeat(3, 1fr); gap: 1.75rem; }
+  }
+  .card {
+    background: var(--color-white);
+    border: 1px solid var(--color-line-200);
+    display: grid;
+    grid-template-columns: 1fr;
+    transition: box-shadow .2s ease, border-color .2s ease;
+  }
+  .card:hover {
+    box-shadow: var(--shadow-cardHover);
+    border-color: var(--color-line-300);
+  }
+  @media (min-width: 48rem) and (max-width: 72rem) {
+    .card { grid-template-columns: 1fr 1.4fr; align-items: stretch; }
+  }
+  .card-media {
+    display: block;
+    background: var(--color-line-100);
+    overflow: hidden;
+  }
+  .card-body {
+    padding: 1.25rem 1.5rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+  }
+  .card-body h3 {
+    font-size: 0.9375rem;
+    font-weight: 700;
+    letter-spacing: var(--tracking-widest);
+    text-transform: uppercase;
+    color: var(--color-navy-900);
+    margin: 0;
+  }
+  .card-body > p {
+    font-size: 0.8125rem;
+    line-height: 1.55;
+    color: var(--color-ink-500);
+    margin: 0;
+  }
+  .card-body .link-cta { margin-top: auto; padding-top: 0.5rem; align-self: flex-start; }
+</style>

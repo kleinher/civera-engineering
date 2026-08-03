@@ -1,0 +1,529 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import type { Locale } from '../i18n/types';
+import { useTranslations, localisePath } from '../i18n';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from './Icon.astro';
+import PlaceholderImage from './PlaceholderImage.astro';
+
+interface Props {
+  locale: Locale;
+  entry: CollectionEntry<'projects'>;
+  prev?: CollectionEntry<'projects'>;
+  next?: CollectionEntry<'projects'>;
+}
+
+const { locale, entry, prev, next } = Astro.props;
+const t = useTranslations(locale);
+const home = localisePath('/', locale);
+const projectHref = (slug: string) => localisePath(`/projects/${slug}/`, locale);
+
+const keyInfoRows = [
+  { key: 'type', value: entry.data.keyInfo.type },
+  { key: 'location', value: entry.data.keyInfo.location },
+  { key: 'status', value: entry.data.keyInfo.status },
+  { key: 'levels', value: entry.data.keyInfo.levels },
+  { key: 'area', value: entry.data.keyInfo.area },
+  { key: 'structural', value: entry.data.keyInfo.structural },
+  { key: 'foundation', value: entry.data.keyInfo.foundation },
+  { key: 'scope', value: entry.data.keyInfo.scope },
+  { key: 'software', value: entry.data.keyInfo.software },
+  { key: 'year', value: entry.data.keyInfo.year },
+] as const;
+
+const gallery = entry.data.gallery.length
+  ? entry.data.gallery
+  : (['completed', 'construction', 'model', 'render', 'drawings', 'foundation'] as const).map((c) => ({ category: c, src: undefined, alt: undefined }));
+
+const homeBase = home;
+---
+<BaseLayout locale={locale} title={`${entry.data.title} — Civera Engineering`} description={entry.data.excerpt} homeBase={homeBase}>
+  <article class="project">
+    <!-- Project Hero -->
+    <header class="p-hero">
+      <div class="p-hero-media" aria-hidden="true">
+        <PlaceholderImage label={entry.data.title} ratio="16 / 6" variant="dark" />
+      </div>
+      <div class="p-hero-overlay" aria-hidden="true"></div>
+      <div class="container-page p-hero-inner">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <ol>
+            <li><a href={home}>{t.project.breadcrumbHome}</a></li>
+            <li><a href={`${home}#projects`}>{t.project.breadcrumbProjects}</a></li>
+            <li aria-current="page">{entry.data.title}</li>
+          </ol>
+        </nav>
+        <p class="eyebrow light">{entry.data.category}</p>
+        <h1>{entry.data.title}</h1>
+        <p class="lead">{entry.data.excerpt}</p>
+      </div>
+    </header>
+
+    <div class="container-page grid">
+      <!-- Key project information -->
+      <aside class="key-info">
+        <h2 class="panel-title">{t.project.keyInfoTitle}</h2>
+        <dl>
+          {keyInfoRows.map((row) => (
+            <div class="row">
+              <dt>{t.project.keyInfo[row.key]}</dt>
+              <dd>{row.value ?? t.project.placeholder}</dd>
+            </div>
+          ))}
+        </dl>
+      </aside>
+
+      <div class="main-col">
+        <!-- Overview -->
+        <section class="block">
+          <h2 class="block-title">{t.project.overviewTitle}</h2>
+          <p>{t.project.overview}</p>
+          <p class="fine">{t.project.overviewNote}</p>
+        </section>
+
+        <!-- Scope -->
+        <section class="block">
+          <h2 class="block-title">{t.project.scopeTitle}</h2>
+          <ul class="check-list">
+            {t.project.scopeItems.map((s) => (<li>{s}</li>))}
+          </ul>
+        </section>
+
+        <!-- Challenge -->
+        <section class="block">
+          <h2 class="block-title">{t.project.challengeTitle}</h2>
+          <p>{t.project.challenge1}</p>
+          <p>{t.project.challenge2}</p>
+        </section>
+      </div>
+    </div>
+
+    <!-- Gallery -->
+    <section class="gallery-section container-page">
+      <h2 class="block-title">{t.project.galleryTitle}</h2>
+      <ul class="gallery" data-gallery>
+        {gallery.map((g, i) => (
+          <li>
+            <button
+              type="button"
+              class="tile"
+              data-lightbox-trigger
+              data-index={i}
+              data-label={t.project.galleryCategories[g.category]}
+              aria-label={t.project.galleryCategories[g.category]}
+            >
+              <PlaceholderImage label={t.project.galleryCategories[g.category]} ratio="4 / 3" variant={g.category === 'drawings' || g.category === 'foundation' || g.category === 'details' ? 'blueprint' : 'light'} />
+              <span class="caption">{t.project.galleryCategories[g.category]}</span>
+            </button>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <!-- Civera scope -->
+    <section class="container-page block civera">
+      <h2 class="block-title">{t.project.civeraTitle}</h2>
+      <p>{t.project.civera1}</p>
+      <p>{t.project.civera2}</p>
+    </section>
+
+    <!-- Confidentiality -->
+    <section class="container-page confidentiality">
+      <h2 class="c-title">{t.project.confidentialityTitle}</h2>
+      <p>{t.project.confidentiality}</p>
+    </section>
+
+    <!-- Project navigation -->
+    <nav class="container-page p-nav" aria-label="Project navigation">
+      <div class="p-nav-inner">
+        {prev ? (
+          <a href={projectHref(prev.data.slug)} class="nav-btn nav-prev">
+            <Icon name="arrow-left" size={16} strokeWidth={1.8} />
+            <span>
+              <span class="nav-label">{t.project.navPrev}</span>
+              <span class="nav-title">{prev.data.title}</span>
+            </span>
+          </a>
+        ) : <span></span>}
+
+        <a href={`${home}#projects`} class="nav-btn nav-back">
+          <span class="nav-label">{t.project.navBack}</span>
+        </a>
+
+        {next ? (
+          <a href={projectHref(next.data.slug)} class="nav-btn nav-next">
+            <span>
+              <span class="nav-label">{t.project.navNext}</span>
+              <span class="nav-title">{next.data.title}</span>
+            </span>
+            <Icon name="arrow-right" size={16} strokeWidth={1.8} />
+          </a>
+        ) : <span></span>}
+      </div>
+      <a href={`${home}#contact`} class="btn btn-primary discuss">
+        {t.project.navDiscuss}
+        <Icon name="arrow-right" size={16} strokeWidth={1.8} />
+      </a>
+    </nav>
+  </article>
+
+  <!-- Lightbox -->
+  <dialog class="lightbox" data-lightbox aria-label="Image viewer">
+    <button type="button" class="lb-close" data-lightbox-close aria-label={t.common.close}>
+      <Icon name="close" size={22} />
+    </button>
+    <button type="button" class="lb-nav lb-prev" data-lightbox-prev aria-label={t.common.previous}>
+      <Icon name="arrow-left" size={22} />
+    </button>
+    <div class="lb-frame" data-lightbox-frame></div>
+    <p class="lb-caption" data-lightbox-caption></p>
+    <button type="button" class="lb-nav lb-next" data-lightbox-next aria-label={t.common.next}>
+      <Icon name="arrow-right" size={22} />
+    </button>
+  </dialog>
+</BaseLayout>
+
+<script>
+  const dialog = document.querySelector('[data-lightbox]');
+  const frame = document.querySelector('[data-lightbox-frame]');
+  const captionEl = document.querySelector('[data-lightbox-caption]');
+  const closeBtn = document.querySelector('[data-lightbox-close]');
+  const prevBtn = document.querySelector('[data-lightbox-prev]');
+  const nextBtn = document.querySelector('[data-lightbox-next]');
+  const triggers = Array.from(document.querySelectorAll('[data-lightbox-trigger]'));
+  let currentIndex = 0;
+
+  function render(i) {
+    if (!frame || !triggers.length) return;
+    currentIndex = ((i % triggers.length) + triggers.length) % triggers.length;
+    const trigger = triggers[currentIndex];
+    const cloned = trigger.querySelector('.ph, img, picture');
+    frame.innerHTML = '';
+    if (cloned) {
+      const clone = cloned.cloneNode(true);
+      frame.appendChild(clone);
+    }
+    if (captionEl) captionEl.textContent = trigger.getAttribute('data-label') || '';
+  }
+
+  function open(i) {
+    if (!dialog) return;
+    render(i);
+    if (typeof dialog.showModal === 'function') dialog.showModal();
+    else dialog.setAttribute('open', '');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function close() {
+    if (!dialog) return;
+    if (typeof dialog.close === 'function') dialog.close();
+    else dialog.removeAttribute('open');
+    document.body.style.overflow = '';
+  }
+
+  triggers.forEach((btn, i) => {
+    btn.addEventListener('click', () => open(i));
+  });
+
+  closeBtn?.addEventListener('click', close);
+  prevBtn?.addEventListener('click', () => render(currentIndex - 1));
+  nextBtn?.addEventListener('click', () => render(currentIndex + 1));
+
+  dialog?.addEventListener('click', (e) => {
+    if (e.target === dialog) close();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (!dialog || !dialog.hasAttribute('open')) return;
+    if (e.key === 'Escape') close();
+    if (e.key === 'ArrowLeft') render(currentIndex - 1);
+    if (e.key === 'ArrowRight') render(currentIndex + 1);
+  });
+</script>
+
+<style>
+  .project { padding-bottom: 4rem; }
+
+  .p-hero {
+    position: relative;
+    min-height: 420px;
+    display: flex;
+    align-items: stretch;
+    overflow: hidden;
+    background: var(--color-navy-900);
+    color: var(--color-white);
+  }
+  .p-hero-media {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+  .p-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg, rgba(5,18,41,0.94), rgba(5,18,41,0.7) 60%, rgba(5,18,41,0.35));
+    z-index: 1;
+  }
+  .p-hero-inner {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding-block: 3.5rem;
+  }
+  .breadcrumb ol {
+    list-style: none;
+    margin: 0 0 1rem;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    color: rgb(255 255 255 / 0.65);
+  }
+  .breadcrumb a { color: rgb(255 255 255 / 0.75); text-decoration: none; }
+  .breadcrumb a:hover { color: var(--color-white); }
+  .breadcrumb li + li::before { content: "/"; margin-right: 0.5rem; color: rgb(255 255 255 / 0.4); }
+
+  .eyebrow.light { color: var(--color-accent-400); }
+  .p-hero h1 {
+    font-size: clamp(1.75rem, 1.1rem + 2vw, 2.5rem);
+    margin: 0.75rem 0 0.75rem;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+  .lead {
+    max-width: 60ch;
+    font-size: 1rem;
+    line-height: 1.55;
+    color: rgb(255 255 255 / 0.85);
+    margin: 0;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    padding-top: 3rem;
+  }
+  @media (min-width: 60rem) {
+    .grid { grid-template-columns: 320px 1fr; gap: 3rem; padding-top: 4rem; }
+  }
+  .key-info {
+    background: var(--color-surface-50);
+    border: 1px solid var(--color-line-200);
+    padding: 1.25rem 1.5rem;
+    align-self: start;
+    position: sticky;
+    top: 96px;
+  }
+  @media (max-width: 60rem) {
+    .key-info { position: static; }
+  }
+  .panel-title,
+  .block-title,
+  .c-title {
+    font-size: 0.875rem;
+    font-weight: 700;
+    letter-spacing: var(--tracking-widest);
+    text-transform: uppercase;
+    color: var(--color-navy-900);
+    margin: 0 0 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--color-line-200);
+  }
+  .key-info dl { margin: 0; display: flex; flex-direction: column; }
+  .key-info .row {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.625rem 0;
+    border-bottom: 1px dashed var(--color-line-200);
+    font-size: 0.8125rem;
+  }
+  .key-info dt { color: var(--color-mute-500); font-weight: 500; }
+  .key-info dd { color: var(--color-navy-900); font-weight: 600; text-align: right; margin: 0; }
+
+  .main-col { display: flex; flex-direction: column; gap: 2.25rem; }
+  .block p {
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    color: var(--color-ink-500);
+    margin: 0 0 0.75rem;
+  }
+  .block .fine {
+    font-size: 0.8125rem;
+    color: var(--color-mute-500);
+    margin-top: 0.5rem;
+  }
+
+  .gallery-section {
+    padding-top: 3rem;
+  }
+  .gallery {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  @media (min-width: 40rem) { .gallery { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 60rem) { .gallery { grid-template-columns: repeat(3, 1fr); } }
+  @media (min-width: 80rem) { .gallery { grid-template-columns: repeat(4, 1fr); } }
+  .tile {
+    background: transparent;
+    padding: 0;
+    border: 1px solid var(--color-line-200);
+    cursor: zoom-in;
+    display: block;
+    width: 100%;
+    text-align: left;
+    transition: box-shadow .2s ease;
+  }
+  .tile:hover { box-shadow: var(--shadow-cardHover); }
+  .tile .caption {
+    display: block;
+    padding: 0.625rem 0.875rem;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: var(--tracking-widest);
+    text-transform: uppercase;
+    color: var(--color-navy-900);
+    background: var(--color-white);
+    border-top: 1px solid var(--color-line-200);
+  }
+
+  .civera { padding-top: 3rem; }
+
+  .confidentiality {
+    margin-top: 2rem;
+    padding: 1.25rem 1.5rem;
+    background: var(--color-sky-50);
+    border-left: 3px solid var(--color-accent-500);
+  }
+  .c-title { border: 0; padding-bottom: 0.25rem; margin-bottom: 0.5rem; }
+  .confidentiality p {
+    font-size: 0.8125rem;
+    line-height: 1.6;
+    color: var(--color-ink-700);
+    margin: 0;
+  }
+
+  .p-nav {
+    margin-top: 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  .p-nav-inner {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 1rem;
+    align-items: stretch;
+    border-top: 1px solid var(--color-line-200);
+    border-bottom: 1px solid var(--color-line-200);
+    padding: 1rem 0;
+  }
+  @media (max-width: 40rem) {
+    .p-nav-inner { grid-template-columns: 1fr; }
+  }
+  .nav-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-decoration: none;
+    color: var(--color-navy-900);
+    padding: 0.5rem 0.75rem;
+    transition: background-color .18s ease;
+  }
+  .nav-btn:hover { background: var(--color-surface-50); }
+  .nav-prev { justify-self: start; }
+  .nav-back { justify-self: center; }
+  .nav-next { justify-self: end; text-align: right; }
+  .nav-label {
+    display: block;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: var(--tracking-widest);
+    text-transform: uppercase;
+    color: var(--color-mute-500);
+  }
+  .nav-title {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--color-navy-900);
+  }
+  .discuss { align-self: center; }
+
+  /* Lightbox */
+  .lightbox {
+    border: 0;
+    padding: 0;
+    background: transparent;
+    max-width: 100%;
+    max-height: 100%;
+    width: 100%;
+    height: 100%;
+    inset: 0;
+  }
+  .lightbox::backdrop { background: rgba(5, 18, 41, 0.92); }
+  .lightbox[open] {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-template-rows: 1fr auto;
+    align-items: center;
+    justify-items: center;
+    padding: 1rem;
+    color: var(--color-white);
+  }
+  .lb-close {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    background: transparent;
+    color: var(--color-white);
+    border: 1px solid rgb(255 255 255 / 0.3);
+    width: 40px;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 2;
+  }
+  .lb-nav {
+    background: transparent;
+    color: var(--color-white);
+    border: 1px solid rgb(255 255 255 / 0.3);
+    width: 40px;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 2;
+  }
+  .lb-nav:hover, .lb-close:hover { background: rgb(255 255 255 / 0.1); }
+  .lb-frame {
+    max-width: min(1100px, 90vw);
+    max-height: 78vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .lb-frame :global(.ph) { max-width: 100%; max-height: 78vh; }
+  .lb-caption {
+    grid-column: 1 / -1;
+    font-size: 0.75rem;
+    letter-spacing: var(--tracking-widest);
+    text-transform: uppercase;
+    text-align: center;
+    color: rgb(255 255 255 / 0.75);
+    margin: 0.75rem 0 0;
+  }
+</style>

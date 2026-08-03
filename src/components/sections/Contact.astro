@@ -1,0 +1,424 @@
+---
+import type { Locale } from '../../i18n/types';
+import { useTranslations } from '../../i18n';
+import Icon from '../Icon.astro';
+
+interface Props { locale: Locale; }
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+
+const projectTypeKeys = [
+  'rc',
+  'steel',
+  'foundation',
+  'connections',
+  'documentation',
+  'review',
+  'other',
+] as const;
+---
+<section id="contact" class="contact">
+  <div class="container-page grid">
+    <div class="col about">
+      <h2 class="col-title">{t.contact.aboutTitle}</h2>
+      <p>{t.contact.aboutText}</p>
+      <p>{t.contact.aboutText2}</p>
+      <p>{t.contact.aboutText3}</p>
+    </div>
+
+    <div class="col form-col">
+      <h2 class="col-title">{t.contact.formTitle}</h2>
+      <p class="intro">{t.contact.formIntro}</p>
+      <!--
+        Backend integration:
+        - Formspree: set action="https://formspree.io/f/xxxxxxx" and method="POST"
+        - Netlify Forms: add `data-netlify="true" netlify-honeypot="bot-field"` and keep name attributes.
+        - Web3Forms: set action="https://api.web3forms.com/submit" and include a hidden <input name="access_key" value="XXX" />.
+      -->
+      <form
+        class="form"
+        data-contact-form
+        action="#"
+        method="POST"
+        enctype="multipart/form-data"
+        novalidate
+      >
+        <input type="text" name="bot-field" tabindex="-1" autocomplete="off" class="hp" aria-hidden="true" />
+
+        <div class="row">
+          <div class="field">
+            <label for="cf-name">{t.contact.fields.name}<span aria-hidden="true">*</span></label>
+            <input id="cf-name" name="name" type="text" required autocomplete="name" />
+            <p class="err" data-err></p>
+          </div>
+          <div class="field">
+            <label for="cf-email">{t.contact.fields.email}<span aria-hidden="true">*</span></label>
+            <input id="cf-email" name="email" type="email" required autocomplete="email" />
+            <p class="err" data-err></p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label for="cf-country">{t.contact.fields.country}</label>
+            <input id="cf-country" name="country" type="text" autocomplete="country-name" />
+            <p class="err" data-err></p>
+          </div>
+          <div class="field">
+            <label for="cf-company">{t.contact.fields.company}</label>
+            <input id="cf-company" name="company" type="text" autocomplete="organization" />
+            <p class="err" data-err></p>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="cf-type">{t.contact.fields.projectType}<span aria-hidden="true">*</span></label>
+          <div class="select">
+            <select id="cf-type" name="project_type" required>
+              <option value="">{t.contact.fields.selectOption}</option>
+              {projectTypeKeys.map((k) => (
+                <option value={k}>{t.contact.projectTypes[k]}</option>
+              ))}
+            </select>
+            <span class="select-chev" aria-hidden="true"><Icon name="chevron-down" size={16} strokeWidth={2} /></span>
+          </div>
+          <p class="err" data-err></p>
+        </div>
+
+        <div class="field">
+          <label for="cf-message">{t.contact.fields.message}<span aria-hidden="true">*</span></label>
+          <textarea id="cf-message" name="message" rows="4" required></textarea>
+          <p class="err" data-err></p>
+        </div>
+
+        <div class="field">
+          <label class="upload">
+            <span class="upload-label">
+              <Icon name="upload" size={16} strokeWidth={1.6} />
+              <span data-upload-text>{t.contact.fields.upload}</span>
+            </span>
+            <input
+              type="file"
+              name="attachment"
+              accept=".pdf,.docx,.xlsx,.dwg,.dxf,.ifc,.zip,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/zip,application/x-zip-compressed,image/vnd.dwg,image/vnd.dxf"
+              data-file-input
+            />
+          </label>
+          <p class="hint">{t.contact.fields.uploadHint}</p>
+          <p class="err" data-err></p>
+        </div>
+
+        <button type="submit" class="btn btn-primary submit">
+          {t.contact.submit}
+          <Icon name="arrow-right" size={16} strokeWidth={1.8} />
+        </button>
+
+        <p class="status success" data-status-success hidden>{t.contact.success}</p>
+        <p class="status error" data-status-error hidden>{t.contact.error}</p>
+      </form>
+    </div>
+
+    <div class="col reach">
+      <h2 class="col-title">{t.contact.getInTouchTitle}</h2>
+      <ul>
+        <li>
+          <a href={`mailto:${t.contact.email}`}>
+            <Icon name="mail" size={18} strokeWidth={1.5} />
+            <span>{t.contact.email}</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" aria-label="LinkedIn placeholder">
+            <Icon name="linkedin" size={18} strokeWidth={1.5} />
+            <span>{t.contact.linkedin}</span>
+          </a>
+        </li>
+        <li>
+          <span class="static">
+            <Icon name="map-pin" size={18} strokeWidth={1.5} />
+            <span>{t.contact.location}</span>
+          </span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<script define:vars={{
+  msgs: {
+    required: t.contact.validation.required,
+    email: t.contact.validation.email,
+    fileType: t.contact.validation.fileType,
+    fileSize: t.contact.validation.fileSize,
+  }
+}}>
+  const form = document.querySelector('[data-contact-form]');
+  if (form) {
+    const successEl = document.querySelector('[data-status-success]');
+    const errorEl = document.querySelector('[data-status-error]');
+    const fileInput = document.querySelector('[data-file-input]');
+    const uploadTextEl = document.querySelector('[data-upload-text]');
+    const defaultUploadText = uploadTextEl ? uploadTextEl.textContent : '';
+
+    const MAX_SIZE = 20 * 1024 * 1024;
+    const ALLOWED_EXT = ['pdf', 'docx', 'xlsx', 'dwg', 'dxf', 'ifc', 'zip'];
+
+    function setError(field, msg) {
+      const wrap = field.closest('.field');
+      const errEl = wrap && wrap.querySelector('[data-err]');
+      if (errEl) {
+        errEl.textContent = msg;
+        errEl.classList.add('is-visible');
+      }
+      field.setAttribute('aria-invalid', 'true');
+    }
+    function clearError(field) {
+      const wrap = field.closest('.field');
+      const errEl = wrap && wrap.querySelector('[data-err]');
+      if (errEl) {
+        errEl.textContent = '';
+        errEl.classList.remove('is-visible');
+      }
+      field.removeAttribute('aria-invalid');
+    }
+
+    if (fileInput) {
+      fileInput.addEventListener('change', () => {
+        const file = fileInput.files && fileInput.files[0];
+        if (!file) {
+          if (uploadTextEl) uploadTextEl.textContent = defaultUploadText;
+          clearError(fileInput);
+          return;
+        }
+        const ext = (file.name.split('.').pop() || '').toLowerCase();
+        if (!ALLOWED_EXT.includes(ext)) {
+          setError(fileInput, msgs.fileType);
+          fileInput.value = '';
+          if (uploadTextEl) uploadTextEl.textContent = defaultUploadText;
+          return;
+        }
+        if (file.size > MAX_SIZE) {
+          setError(fileInput, msgs.fileSize);
+          fileInput.value = '';
+          if (uploadTextEl) uploadTextEl.textContent = defaultUploadText;
+          return;
+        }
+        clearError(fileInput);
+        if (uploadTextEl) uploadTextEl.textContent = file.name;
+      });
+    }
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      let valid = true;
+
+      const hp = form.querySelector('input[name="bot-field"]');
+      if (hp && hp.value) return;
+
+      const requiredFields = form.querySelectorAll('[required]');
+      requiredFields.forEach((f) => {
+        clearError(f);
+        if (!f.value.trim()) {
+          setError(f, msgs.required);
+          valid = false;
+        }
+      });
+
+      const emailField = form.querySelector('input[type="email"]');
+      if (emailField && emailField.value.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailField.value.trim())) {
+        setError(emailField, msgs.email);
+        valid = false;
+      }
+
+      if (successEl) successEl.setAttribute('hidden', '');
+      if (errorEl) errorEl.setAttribute('hidden', '');
+
+      if (!valid) {
+        if (errorEl) errorEl.removeAttribute('hidden');
+        const firstErr = form.querySelector('[aria-invalid="true"]');
+        if (firstErr) firstErr.focus();
+        return;
+      }
+
+      // Submission placeholder — backend integration TBD (Formspree / Netlify Forms / Web3Forms).
+      if (successEl) successEl.removeAttribute('hidden');
+      form.reset();
+      if (uploadTextEl) uploadTextEl.textContent = defaultUploadText;
+    });
+  }
+</script>
+
+<style>
+  .contact {
+    background: var(--color-navy-950);
+    color: var(--color-white);
+    padding: 5rem 0;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+  @media (min-width: 60rem) {
+    .grid { grid-template-columns: 1fr 1.4fr 1fr; gap: 3rem; }
+  }
+  .col-title {
+    font-size: 0.875rem;
+    font-weight: 700;
+    letter-spacing: var(--tracking-widest);
+    text-transform: uppercase;
+    color: var(--color-white);
+    margin: 0 0 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid rgb(255 255 255 / 0.12);
+  }
+  .about p {
+    font-size: 0.875rem;
+    line-height: 1.65;
+    color: rgb(255 255 255 / 0.72);
+    margin: 0 0 0.875rem;
+  }
+
+  .form-col .intro {
+    font-size: 0.8125rem;
+    color: rgb(255 255 255 / 0.65);
+    line-height: 1.6;
+    margin: 0 0 1.25rem;
+  }
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+  }
+  .row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.875rem;
+  }
+  @media (min-width: 36rem) {
+    .row { grid-template-columns: 1fr 1fr; }
+  }
+  .field { display: flex; flex-direction: column; gap: 0.375rem; }
+  label {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: var(--tracking-widest);
+    text-transform: uppercase;
+    color: rgb(255 255 255 / 0.7);
+  }
+  label span[aria-hidden="true"] { color: var(--color-accent-400); margin-left: 3px; }
+  input[type="text"],
+  input[type="email"],
+  select,
+  textarea {
+    width: 100%;
+    padding: 0.6875rem 0.875rem;
+    background: rgb(255 255 255 / 0.06);
+    color: var(--color-white);
+    border: 1px solid rgb(255 255 255 / 0.14);
+    border-radius: var(--radius-tight);
+    font: inherit;
+    font-size: 0.875rem;
+    transition: border-color .15s ease, background-color .15s ease;
+  }
+  textarea { resize: vertical; min-height: 96px; }
+  input:focus,
+  select:focus,
+  textarea:focus {
+    outline: none;
+    border-color: var(--color-accent-400);
+    background: rgb(255 255 255 / 0.09);
+  }
+  input[aria-invalid="true"],
+  select[aria-invalid="true"],
+  textarea[aria-invalid="true"] {
+    border-color: #f97070;
+  }
+  .select {
+    position: relative;
+  }
+  .select select {
+    appearance: none;
+    padding-right: 2.25rem;
+  }
+  .select-chev {
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgb(255 255 255 / 0.7);
+    pointer-events: none;
+  }
+  select option { color: var(--color-ink-900); background: var(--color-white); }
+
+  .upload {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 0.875rem;
+    background: rgb(255 255 255 / 0.04);
+    border: 1px dashed rgb(255 255 255 / 0.25);
+    color: rgb(255 255 255 / 0.75);
+    cursor: pointer;
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-weight: 600;
+    transition: border-color .15s ease, background-color .15s ease;
+  }
+  .upload:hover { border-color: var(--color-accent-400); }
+  .upload-label { display: inline-flex; align-items: center; gap: 0.5rem; }
+  .upload input[type="file"] {
+    position: absolute;
+    left: -9999px;
+    opacity: 0;
+  }
+  .hint {
+    font-size: 0.6875rem;
+    color: rgb(255 255 255 / 0.5);
+    margin: 0;
+    letter-spacing: 0.02em;
+  }
+  .err {
+    min-height: 0;
+    font-size: 0.6875rem;
+    color: #f97070;
+    margin: 0;
+    letter-spacing: 0.02em;
+  }
+  .err.is-visible { min-height: 1em; }
+  .submit {
+    align-self: flex-start;
+    margin-top: 0.375rem;
+    padding: 0.875rem 1.25rem;
+    background: var(--color-accent-500);
+  }
+  .status {
+    font-size: 0.8125rem;
+    padding: 0.75rem 0.875rem;
+    border-radius: var(--radius-tight);
+    margin: 0;
+  }
+  .status.success { background: rgb(38 128 62 / 0.16); color: #a1e2b0; border: 1px solid rgb(38 128 62 / 0.4); }
+  .status.error { background: rgb(249 112 112 / 0.14); color: #f9b3b3; border: 1px solid rgb(249 112 112 / 0.4); }
+  .hp {
+    position: absolute !important;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0,0,0,0);
+    border: 0;
+  }
+
+  .reach ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.75rem; }
+  .reach a,
+  .reach .static {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    font-size: 0.875rem;
+    color: rgb(255 255 255 / 0.8);
+    text-decoration: none;
+    transition: color .18s ease;
+  }
+  .reach a:hover { color: var(--color-white); }
+</style>

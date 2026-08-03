@@ -1,0 +1,89 @@
+---
+import type { Locale } from '../../i18n/types';
+import { useTranslations } from '../../i18n';
+import PlaceholderImage from '../PlaceholderImage.astro';
+
+interface Props { locale: Locale; }
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+
+const cards = [
+  { key: 'residential' as const, variant: 'light' as const },
+  { key: 'renders' as const, variant: 'light' as const },
+  { key: 'model' as const, variant: 'blueprint' as const },
+  { key: 'technical' as const, variant: 'blueprint' as const },
+];
+---
+<section id="visualisation" class="visualisation">
+  <div class="container-page">
+    <h2 class="section-title">{t.visualisation.title}</h2>
+    <div class="layout reveal">
+      <div class="intro">
+        <p>{t.visualisation.intro}</p>
+        <ul class="check-list">
+          {t.visualisation.checklist.map((c) => (<li>{c}</li>))}
+        </ul>
+      </div>
+      <div class="cards">
+        {cards.map((c) => (
+          <figure class="vis-card">
+            <PlaceholderImage label={t.visualisation.cards[c.key]} ratio="4 / 3" variant={c.variant} />
+            <figcaption>{t.visualisation.cards[c.key]}</figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .visualisation {
+    padding: 5rem 0 4rem;
+    background: var(--color-surface-50);
+    border-bottom: 1px solid var(--color-line-200);
+  }
+  .layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  @media (min-width: 60rem) {
+    .layout { grid-template-columns: 1fr 2.4fr; gap: 3rem; align-items: start; }
+  }
+  .intro p {
+    font-size: 0.9375rem;
+    line-height: 1.65;
+    color: var(--color-ink-500);
+    margin: 0 0 1.25rem;
+    max-width: 40ch;
+  }
+  .cards {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  @media (min-width: 40rem) {
+    .cards { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (min-width: 60rem) {
+    .cards { grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+  }
+  .vis-card {
+    margin: 0;
+    background: var(--color-white);
+    border: 1px solid var(--color-line-200);
+    overflow: hidden;
+    transition: box-shadow .2s ease;
+  }
+  .vis-card:hover { box-shadow: var(--shadow-cardHover); }
+  figcaption {
+    padding: 0.75rem 0.875rem;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: var(--tracking-widest);
+    text-transform: uppercase;
+    color: var(--color-navy-900);
+    text-align: center;
+    border-top: 1px solid var(--color-line-200);
+  }
+</style>

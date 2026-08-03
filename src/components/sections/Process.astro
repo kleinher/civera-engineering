@@ -1,0 +1,158 @@
+---
+import type { Locale } from '../../i18n/types';
+import { useTranslations } from '../../i18n';
+import Icon from '../Icon.astro';
+
+interface Props { locale: Locale; }
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+
+const steps = [
+  { key: 'requirements', icon: 'requirements' as const },
+  { key: 'analysis', icon: 'analysis' as const },
+  { key: 'design', icon: 'design' as const },
+  { key: 'documentation', icon: 'documentation' as const },
+  { key: 'delivery', icon: 'delivery' as const },
+] as const;
+---
+<section id="how-we-work" class="process">
+  <div class="container-page">
+    <h2 class="section-title">{t.process.title}</h2>
+    <div class="layout reveal">
+      <ol class="steps">
+        {steps.map((s, i) => (
+          <li class="step">
+            <div class="circle" aria-hidden="true">
+              <Icon name={s.icon} size={26} strokeWidth={1.5} />
+            </div>
+            <h3>{t.process.steps[s.key].title}</h3>
+            <p>{t.process.steps[s.key].desc}</p>
+            {i < steps.length - 1 && (
+              <span class="arrow" aria-hidden="true">
+                <Icon name="arrow-right" size={18} strokeWidth={1.6} />
+              </span>
+            )}
+          </li>
+        ))}
+      </ol>
+      <aside class="notes">
+        <p>{t.process.aside1}</p>
+        <p>{t.process.aside2}</p>
+        <p class="fine">{t.process.aside3}</p>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<style>
+  .process {
+    padding: 5rem 0 4rem;
+    background: var(--color-white);
+    border-bottom: 1px solid var(--color-line-200);
+  }
+  .layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    align-items: start;
+  }
+  @media (min-width: 72rem) {
+    .layout { grid-template-columns: 2.6fr 1fr; gap: 3rem; }
+  }
+  .steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    counter-reset: step;
+  }
+  @media (min-width: 60rem) {
+    .steps {
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0;
+    }
+  }
+  .step {
+    position: relative;
+    text-align: center;
+    padding: 0 0.5rem;
+  }
+  .circle {
+    width: 62px;
+    height: 62px;
+    border-radius: 999px;
+    border: 1.5px solid var(--color-navy-900);
+    color: var(--color-navy-900);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.75rem;
+    background: var(--color-white);
+    transition: color .2s ease, border-color .2s ease, background-color .2s ease;
+  }
+  .step:hover .circle {
+    color: var(--color-accent-500);
+    border-color: var(--color-accent-500);
+    background: var(--color-sky-50);
+  }
+  .step h3 {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: var(--tracking-widest);
+    text-transform: uppercase;
+    color: var(--color-navy-900);
+    margin: 0 0 0.375rem;
+  }
+  .step p {
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: var(--color-ink-500);
+    margin: 0;
+    max-width: 22ch;
+    margin-inline: auto;
+  }
+  .arrow {
+    color: var(--color-mute-400);
+    display: none;
+  }
+  @media (min-width: 60rem) {
+    .arrow {
+      display: inline-flex;
+      position: absolute;
+      top: 22px;
+      right: -12px;
+    }
+  }
+  /* mobile vertical connectors */
+  .step + .step::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: -28px;
+    width: 1px;
+    height: 20px;
+    background: var(--color-line-300);
+  }
+  @media (min-width: 60rem) {
+    .step + .step::before { display: none; }
+  }
+  .notes {
+    background: var(--color-surface-50);
+    border-left: 3px solid var(--color-accent-500);
+    padding: 1.25rem 1.5rem;
+  }
+  .notes p {
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: var(--color-ink-500);
+    margin: 0 0 0.75rem;
+  }
+  .notes .fine {
+    font-size: 0.75rem;
+    color: var(--color-mute-500);
+    line-height: 1.55;
+    margin: 0;
+  }
+</style>

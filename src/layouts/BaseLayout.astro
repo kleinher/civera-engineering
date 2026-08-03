@@ -1,0 +1,191 @@
+---
+import '../styles/global.css';
+import type { Locale } from '../i18n/types';
+import { locales, defaultLocale } from '../i18n/types';
+import { useTranslations, switchLocalePath } from '../i18n';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  locale: Locale;
+  title?: string;
+  description?: string;
+  homeBase?: string;
+  ogImage?: string;
+}
+
+const { locale, title, description, homeBase, ogImage } = Astro.props;
+const t = useTranslations(locale);
+const pageTitle = title ?? t.meta.title;
+const pageDescription = description ?? t.meta.description;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const currentPath = Astro.url.pathname;
+const alternates = locales.map((loc) => ({
+  loc,
+  href: new URL(switchLocalePath(currentPath, loc, locale), Astro.site).toString(),
+}));
+const ogImageUrl = new URL(ogImage ?? '/og-image.svg', Astro.site).toString();
+---
+<!doctype html>
+<html lang={locale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#071b33" />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonical.toString()} />
+    {alternates.map((a) => (
+      <link rel="alternate" hreflang={a.loc} href={a.href} />
+    ))}
+    <link rel="alternate" hreflang="x-default" href={new URL(switchLocalePath(currentPath, defaultLocale, locale), Astro.site).toString()} />
+
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDescription} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:url" content={canonical.toString()} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:locale" content={locale} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={pageDescription} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    <link rel="preconnect" href="https://rsms.me/" crossorigin />
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
+  </head>
+  <body>
+    <a href="#main" class="skip-link">{t.common.skipToContent}</a>
+    <Header locale={locale} homeBase={homeBase} />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer locale={locale} homeBase={homeBase} />
+
+    <script>
+      // Sticky header shadow
+      const header = document.querySelector<HTMLElement>('[data-header]');
+      const onScroll = () => {
+        if (!header) return;
+        header.dataset.scrolled = window.scrollY > 8 ? 'true' : 'false';
+      };
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+
+      // Mobile menu
+      const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+      const closeBtn = document.querySelector<HTMLButtonElement>('[data-menu-close]');
+      const menu = document.querySelector<HTMLElement>('[data-mobile-menu]');
+      const setMenu = (open: boolean) => {
+        if (!menu || !toggle) return;
+        menu.hidden = !open;
+        toggle.setAttribute('aria-expanded', String(open));
+        document.body.style.overflow = open ? 'hidden' : '';
+      };
+      toggle?.addEventListener('click', () => setMenu(menu?.hidden ?? true));
+      closeBtn?.addEventListener('click', () => setMenu(false));
+      document.querySelectorAll('[data-mobile-link]').forEach((el) => {
+        el.addEventListener('click', () => setMenu(false));
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          if (menu && !menu.hidden) setMenu(false);
+        }
+      });
+
+      // Language dropdown
+      const langWrap = document.querySelector<HTMLElement>('[data-lang]');
+      const langBtn = document.querySelector<HTMLButtonElement>('[data-lang-toggle]');
+      const langMenu = document.querySelector<HTMLElement>('[data-lang-menu]');
+      const setLang = (open: boolean) => {
+        if (!langMenu || !langBtn) return;
+        langMenu.hidden = !open;
+        langBtn.setAttribute('aria-expanded', String(open));
+      };
+      langBtn?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        setLang(langMenu?.hidden ?? true);
+      });
+      document.addEventListener('click', (e) => {
+        if (!langWrap?.contains(e.target as Node)) setLang(false);
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') setLang(false);
+      });
+
+      // Active section highlighting (only on homepage where sections exist)
+      const navLinks = Array.from(
+        document.querySelectorAll<HTMLAnchorElement>('[data-nav-link][data-nav-target]')
+      );
+      const targets = navLinks
+        .map((a) => document.getElementById(a.dataset.navTarget ?? ''))
+        .filter((el): el is HTMLElement => el !== null);
+      if (targets.length) {
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                const id = entry.target.id;
+                navLinks.forEach((a) => {
+                  if (a.dataset.navTarget === id) a.setAttribute('aria-current', 'true');
+                  else a.removeAttribute('aria-current');
+                });
+              }
+            });
+          },
+          { rootMargin: '-40% 0px -55% 0px', threshold: 0 }
+        );
+        targets.forEach((el) => io.observe(el));
+      }
+
+      // Copyright year
+      document.querySelectorAll<HTMLElement>('[data-year]').forEach((el) => {
+        el.textContent = String(new Date().getFullYear());
+      });
+
+      // Scroll reveal
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const reveals = document.querySelectorAll<HTMLElement>('.reveal');
+      if (reveals.length && !reduceMotion && 'IntersectionObserver' in window) {
+        const revObserver = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                revObserver.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.08, rootMargin: '0px 0px -10% 0px' }
+        );
+        reveals.forEach((el) => revObserver.observe(el));
+      } else {
+        reveals.forEach((el) => el.classList.add('is-visible'));
+      }
+    </script>
+
+    <style is:global>
+      .skip-link {
+        position: absolute;
+        left: 8px;
+        top: 8px;
+        padding: 0.5rem 0.875rem;
+        background: var(--color-navy-900);
+        color: var(--color-white);
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        transform: translateY(-140%);
+        z-index: 100;
+        border-radius: 2px;
+        transition: transform .2s ease;
+      }
+      .skip-link:focus { transform: none; }
+    </style>
+  </body>
+</html>

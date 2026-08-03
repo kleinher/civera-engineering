@@ -1,0 +1,125 @@
+---
+import type { Locale } from '../i18n/types';
+import { useTranslations, localisePath } from '../i18n';
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+
+interface Props {
+  locale: Locale;
+  homeBase?: string;
+}
+const { locale, homeBase } = Astro.props;
+const t = useTranslations(locale);
+const home = localisePath('/', locale);
+const anchor = (id: string) => (homeBase ? `${homeBase}#${id}` : `#${id}`);
+---
+<footer class="site-footer">
+  <div class="container-page grid">
+    <div class="col brand">
+      <Logo variant="light" href={home} />
+      <p>{t.footer.tagline}</p>
+    </div>
+
+    <div class="col">
+      <h3>{t.footer.navTitle}</h3>
+      <ul>
+        <li><a href={anchor('services')}>{t.nav.services}</a></li>
+        <li><a href={anchor('projects')}>{t.nav.projects}</a></li>
+        <li><a href={anchor('experience')}>{t.nav.experience}</a></li>
+        <li><a href={anchor('visualisation')}>{t.nav.visualisation}</a></li>
+        <li><a href={anchor('about')}>{t.nav.about}</a></li>
+        <li><a href={anchor('contact')}>{t.nav.contact}</a></li>
+      </ul>
+    </div>
+
+    <div class="col">
+      <h3>{t.footer.contactTitle}</h3>
+      <ul>
+        <li>
+          <a href={`mailto:${t.contact.email}`}>
+            <Icon name="mail" size={16} />
+            <span>{t.contact.email}</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" aria-label="LinkedIn placeholder" data-linkedin-placeholder>
+            <Icon name="linkedin" size={16} />
+            <span>{t.contact.linkedin}</span>
+          </a>
+        </li>
+        <li>
+          <span class="loc">
+            <Icon name="map-pin" size={16} />
+            <span>{t.contact.location}</span>
+          </span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="container-page bottom">
+    <p>© <span data-year>2026</span> Civera Engineering. {t.footer.rights}</p>
+    <ul class="legal">
+      <li><a href="#">{t.footer.privacy}</a></li>
+      <li><a href="#">{t.footer.legal}</a></li>
+    </ul>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--color-navy-950);
+    color: rgb(255 255 255 / 0.78);
+    padding: 3.5rem 0 1.5rem;
+    border-top: 3px solid var(--color-accent-500);
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1.1fr;
+    gap: 3rem;
+    padding-bottom: 2.5rem;
+    border-bottom: 1px solid rgb(255 255 255 / 0.08);
+  }
+  @media (max-width: 60rem) {
+    .grid { grid-template-columns: 1fr; gap: 2rem; }
+  }
+  .col p {
+    max-width: 28ch;
+    line-height: 1.55;
+    font-size: 0.875rem;
+    margin-top: 1rem;
+  }
+  h3 {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: var(--tracking-widest);
+    text-transform: uppercase;
+    color: var(--color-white);
+    margin: 0 0 1rem;
+  }
+  ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.5rem; }
+  .col a,
+  .col .loc {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8125rem;
+    color: rgb(255 255 255 / 0.72);
+    text-decoration: none;
+    transition: color .18s ease;
+  }
+  .col a:hover { color: var(--color-white); }
+  .bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 1.25rem;
+    font-size: 0.75rem;
+    color: rgb(255 255 255 / 0.5);
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .legal { display: flex; gap: 1.5rem; }
+  .legal a { color: rgb(255 255 255 / 0.5); text-decoration: none; }
+  .legal a:hover { color: var(--color-white); }
+</style>

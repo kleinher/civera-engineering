@@ -1,0 +1,164 @@
+---
+import type { Locale } from '../../i18n/types';
+import { useTranslations } from '../../i18n';
+import Icon from '../Icon.astro';
+
+interface Props { locale: Locale; }
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+
+const cards = [
+  { key: 'rc', icon: 'rc-calc' as const },
+  { key: 'industrial', icon: 'industrial' as const },
+  { key: 'steel', icon: 'steel-conn' as const },
+  { key: 'international', icon: 'international' as const },
+  { key: 'review', icon: 'review' as const },
+] as const;
+
+const strip = [
+  { key: 'geo', icon: 'globe' as const },
+  { key: 'teams', icon: 'users' as const },
+  { key: 'quality', icon: 'shield' as const },
+] as const;
+---
+<section id="experience" class="experience">
+  <div class="container-page">
+    <h2 class="section-title">{t.experience.title}</h2>
+    <div class="layout reveal">
+      <div class="intro">
+        <p>{t.experience.intro1}</p>
+        <p>{t.experience.intro2}</p>
+      </div>
+      <div class="cards">
+        {cards.map((c) => (
+          <article class="exp-card">
+            <div class="icon" aria-hidden="true"><Icon name={c.icon} size={44} strokeWidth={1.2} /></div>
+            <h3>{t.experience.items[c.key].title}</h3>
+            <p>{t.experience.items[c.key].desc}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+
+    <div class="strip reveal">
+      {strip.map((s) => (
+        <div class="strip-item">
+          <div class="strip-icon" aria-hidden="true"><Icon name={s.icon} size={22} strokeWidth={1.4} /></div>
+          <div>
+            <h4>{t.experience.strip[s.key].title}</h4>
+            <p>{t.experience.strip[s.key].desc}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .experience {
+    padding: 5rem 0 4rem;
+    background: var(--color-white);
+    border-bottom: 1px solid var(--color-line-200);
+  }
+  .layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+  @media (min-width: 60rem) {
+    .layout { grid-template-columns: 1fr 2.2fr; gap: 3rem; }
+  }
+  .intro p {
+    font-size: 0.9375rem;
+    line-height: 1.65;
+    color: var(--color-ink-500);
+    margin: 0 0 1rem;
+    max-width: 46ch;
+  }
+  .cards {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  @media (min-width: 30rem) {
+    .cards { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (min-width: 60rem) {
+    .cards { grid-template-columns: repeat(5, 1fr); gap: 0.5rem; }
+  }
+  .exp-card {
+    padding: 1.25rem 1rem 1.5rem;
+    text-align: center;
+    border-right: 1px solid transparent;
+  }
+  @media (min-width: 60rem) {
+    .exp-card + .exp-card { border-left: 1px solid var(--color-line-200); }
+  }
+  .exp-card .icon {
+    color: var(--color-navy-900);
+    display: inline-flex;
+    justify-content: center;
+    height: 52px;
+    align-items: center;
+    margin-bottom: 0.75rem;
+  }
+  .exp-card h3 {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: var(--tracking-widest);
+    text-transform: uppercase;
+    color: var(--color-navy-900);
+    margin: 0 0 0.5rem;
+    line-height: 1.4;
+  }
+  .exp-card p {
+    font-size: 0.8125rem;
+    line-height: 1.55;
+    color: var(--color-ink-500);
+    margin: 0;
+  }
+
+  .strip {
+    margin-top: 2.5rem;
+    padding: 1.25rem 1.5rem;
+    background: var(--color-sky-50);
+    border: 1px solid var(--color-line-200);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem 2rem;
+  }
+  @media (min-width: 60rem) {
+    .strip { grid-template-columns: repeat(3, 1fr); align-items: center; }
+  }
+  .strip-item {
+    display: flex;
+    gap: 0.875rem;
+    align-items: flex-start;
+  }
+  .strip-icon {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-white);
+    color: var(--color-accent-500);
+    border: 1px solid var(--color-line-300);
+    border-radius: 999px;
+  }
+  .strip-item h4 {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: var(--tracking-widest);
+    text-transform: uppercase;
+    color: var(--color-navy-900);
+    margin: 0 0 0.25rem;
+  }
+  .strip-item p {
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: var(--color-ink-500);
+    margin: 0;
+  }
+</style>
