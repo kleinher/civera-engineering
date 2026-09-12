@@ -6,7 +6,7 @@ import mdx from '@astrojs/mdx';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://civera-engineering.hernan-k97.workers.dev',
+  site: 'https://civeraeng.com',
   integrations: [sitemap(), mdx()],
   vite: {
     plugins: [tailwindcss()],
