@@ -124,14 +124,14 @@ export default {
       architectural: {
         title: 'Architectural Visualisation',
         desc: 'High-quality architectural visualisation supporting design development, client communication and project presentation.',
-        image: '',
-        alt: 'Exterior render — Office development, Norway (image pending)',
+        image: '/images/visualisation/01-architectural-visualisation.jpg',
+        alt: 'Exterior render — Office development in Norway, dusk view with snow',
       },
       interior: {
         title: 'Interior Visualisation',
         desc: 'Interior visualisation developed to communicate spatial character, materials and design intent.',
-        image: '',
-        alt: 'Interior render — Office development, Norway (image pending)',
+        image: '/images/visualisation/02-interior-visualisation.jpg',
+        alt: 'Interior render — Open office workspace with acoustic ceiling and daylight',
       },
       model: {
         title: 'Structural 3D Models',

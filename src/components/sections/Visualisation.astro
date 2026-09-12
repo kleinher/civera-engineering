@@ -8,10 +8,10 @@ const { locale } = Astro.props;
 const t = useTranslations(locale);
 
 const cards = [
-  { key: 'architectural' as const, variant: 'light' as const, pending: true },
-  { key: 'interior' as const, variant: 'light' as const, pending: true },
-  { key: 'model' as const, variant: 'blueprint' as const, pending: false },
-  { key: 'technical' as const, variant: 'blueprint' as const, pending: false },
+  { key: 'architectural' as const, variant: 'light' as const },
+  { key: 'interior' as const, variant: 'light' as const },
+  { key: 'model' as const, variant: 'blueprint' as const },
+  { key: 'technical' as const, variant: 'blueprint' as const },
 ];
 ---
 <section id="visualisation" class="visualisation">
@@ -29,7 +29,6 @@ const cards = [
               ) : (
                 <PlaceholderImage label={card.title} ratio="4 / 3" variant={c.variant} />
               )}
-              {c.pending && <span class="badge">Pending</span>}
             </div>
             <figcaption>
               <span class="cap-title">{card.title}</span>

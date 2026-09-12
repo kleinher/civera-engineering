@@ -126,14 +126,14 @@ const dict: Dictionary = {
       architectural: {
         title: 'Visualización arquitectónica',
         desc: 'Visualización arquitectónica de alta calidad para apoyar el desarrollo de diseño, la comunicación con el cliente y la presentación del proyecto.',
-        image: '',
-        alt: 'Render exterior — Oficinas, Noruega (imagen pendiente)',
+        image: '/images/visualisation/01-architectural-visualisation.jpg',
+        alt: 'Render exterior — Edificio de oficinas en Noruega, vista al atardecer con nieve',
       },
       interior: {
         title: 'Visualización de interiores',
         desc: 'Visualización de interiores desarrollada para comunicar carácter espacial, materiales e intención de diseño.',
-        image: '',
-        alt: 'Render interior — Oficinas, Noruega (imagen pendiente)',
+        image: '/images/visualisation/02-interior-visualisation.jpg',
+        alt: 'Render interior — Espacio de oficinas open space con cielorraso acústico y luz natural',
       },
       model: {
         title: 'Modelos 3D estructurales',
