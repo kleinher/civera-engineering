@@ -4,7 +4,7 @@ const dict: Dictionary = {
   meta: {
     title: 'Civera Engineering — Ingeniería estructural para edificios y proyectos industriales',
     description:
-      'Diseño estructural, cálculos de ingeniería y documentación técnica en hormigón armado, acero estructural, fundaciones y conexiones.',
+      'Ingeniería estructural, civil y multidisciplinaria para edificios y proyectos industriales: hormigón armado, acero estructural, fundaciones, conexiones y documentación técnica.',
   },
   nav: {
     home: 'Inicio',
@@ -24,61 +24,65 @@ const dict: Dictionary = {
     line2: 'para edificios y',
     line3: 'proyectos industriales',
     supporting:
-      'Diseño estructural, cálculos de ingeniería y documentación técnica en hormigón armado, acero estructural, fundaciones y conexiones.',
-    categories: 'Edificios · Industria · Soporte de ingeniería',
-    primary: 'Ver capacidades',
-    secondary: 'Consultar un proyecto',
+      'Ingeniería estructural y multidisciplinaria para edificios y proyectos industriales, desde el análisis y el diseño hasta la documentación técnica y el soporte durante la construcción.',
+    categories: 'Edificios · Industria · Acero · Visualización',
+    primary: 'Nuestros servicios',
+    secondary: 'Ver proyectos',
   },
   services: {
     title: 'Nuestros servicios de ingeniería',
     items: {
       concrete: {
         title: 'Estructuras de hormigón armado',
-        desc: 'Diseño y análisis de sistemas estructurales de hormigón armado para edificios e instalaciones industriales.',
+        desc: 'Análisis y diseño de losas, vigas, columnas, tabiques, núcleos y sistemas estructurales completos de hormigón armado.',
       },
       steel: {
-        title: 'Estructuras de acero',
-        desc: 'Diseño y análisis de estructuras de acero, plataformas, soportes de equipos y acero secundario.',
+        title: 'Acero estructural',
+        desc: 'Ingeniería de sistemas de acero estructural para aplicaciones edilicias e industriales.',
       },
       foundation: {
         title: 'Ingeniería de fundaciones',
-        desc: 'Diseño de fundaciones superficiales y profundas bajo cargas estáticas y dinámicas.',
+        desc: 'Diseño de fundaciones de hormigón armado y sistemas de soporte según cargas estructurales, requisitos del proyecto y condiciones del terreno.',
       },
       connections: {
         title: 'Conexiones metálicas',
-        desc: 'Diseño y detalle de conexiones abulonadas y soldadas, placas base, anclajes e interfaces estructurales.',
+        desc: 'Ingeniería y detalle de conexiones de acero estructural para edificios y estructuras industriales.',
       },
       documentation: {
         title: 'Documentación de ingeniería',
-        desc: 'Memorias de cálculo, planos estructurales, detalles de armaduras y conexiones, cómputos y documentación técnica.',
+        desc: 'Cálculos estructurales, planos, detalles de armaduras, cómputos y documentación técnica coordinada.',
+      },
+      industrial: {
+        title: 'Soporte de ingeniería industrial',
+        desc: 'Soporte de ingeniería para proyectos industriales, incluyendo coordinación multidisciplinaria, documentación técnica e ingeniería orientada a la construcción.',
       },
     },
   },
   projects: {
-    title: 'Proyectos por Civera',
+    title: 'Proyectos estructurales seleccionados',
     description: 'Diseño estructural completo de un edificio residencial de hormigón armado.',
     view: 'Ver proyecto',
     scope: [
-      'Diseño completo de fundaciones (superficiales y profundas)',
       'Diseño completo de estructura de hormigón armado',
-      'Coordinación multidisciplinaria',
-      'Supervisión de obra',
+      'Ingeniería de fundación y superestructura',
+      'Documentación estructural y coordinación',
+      'Soporte de ingeniería en etapa de construcción',
     ],
   },
   experience: {
     title: 'La experiencia de nuestro equipo',
     intro1:
-      'Nuestro equipo combina experiencia directa en el diseño y cálculo de edificios de hormigón armado con roles profesionales activos en proyectos industriales e internacionales.',
+      'Los profesionales que colaboran bajo Civera combinan experiencia directa en el diseño y cálculo de edificios de hormigón armado con roles profesionales activos en proyectos industriales e internacionales.',
     intro2:
-      'Brindamos diseño estructural, estructuras de acero, diseño de conexiones, ingeniería de fundaciones y coordinación técnica en múltiples sectores y entornos de proyecto.',
+      'Brindamos diseño estructural, estructuras de acero, diseño de conexiones, ingeniería de fundaciones y coordinación técnica multidisciplinaria en múltiples sectores y entornos de proyecto.',
     items: {
       rc: {
         title: 'Cálculos de hormigón armado',
         desc: 'Análisis y diseño estructural completo de edificios de hormigón armado incluyendo losas, vigas, columnas, muros y fundaciones.',
       },
       industrial: {
-        title: 'Proyectos industriales y de energía',
-        desc: 'Experiencia en diseño estructural de plantas industriales, soportes de equipos, plataformas y estructuras de proceso.',
+        title: 'Proyectos industriales y multidisciplinarios',
+        desc: 'Experiencia en ingeniería estructural, mecánica y de piping para plantas industriales, soportes de equipos, plataformas y estructuras de proceso.',
       },
       steel: {
         title: 'Conexiones y estructuras de acero',
@@ -86,7 +90,7 @@ const dict: Dictionary = {
       },
       international: {
         title: 'Coordinación internacional',
-        desc: 'Ingenieros trabajando en Alemania, Europa y Argentina bajo distintas condiciones, normativas y entornos de proyecto.',
+        desc: 'Ingenieros trabajando entre Europa y Argentina bajo distintas condiciones, normativas y entornos de proyecto.',
       },
       review: {
         title: 'Revisión técnica y coordinación',
@@ -95,7 +99,7 @@ const dict: Dictionary = {
     },
     strip: {
       geo: {
-        title: 'Ingenieros en Alemania y Argentina',
+        title: 'Ingenieros entre Europa y Argentina',
         desc: 'Trabajando bajo distintas condiciones y husos horarios.',
       },
       teams: {
@@ -109,20 +113,40 @@ const dict: Dictionary = {
     },
   },
   visualisation: {
-    title: 'Soporte de diseño y visualización',
+    title: 'Diseño y visualización',
     intro:
-      'Visualización arquitectónica y técnica para apoyar el diseño residencial, la comunicación de ingeniería y la presentación de proyectos.',
+      'Visualización arquitectónica y técnica para apoyar el desarrollo de diseño, la comunicación de ingeniería y la presentación de proyectos.',
     checklist: [
-      'Diseño residencial',
-      'Renders arquitectónicos',
+      'Visualización arquitectónica',
+      'Visualización de interiores',
       'Modelos 3D estructurales',
       'Visualización técnica',
     ],
     cards: {
-      residential: 'Diseño residencial',
-      renders: 'Renders arquitectónicos',
-      model: 'Modelos 3D estructurales',
-      technical: 'Visualización técnica',
+      architectural: {
+        title: 'Visualización arquitectónica',
+        desc: 'Visualización arquitectónica de alta calidad para apoyar el desarrollo de diseño, la comunicación con el cliente y la presentación del proyecto.',
+        image: '',
+        alt: 'Render exterior — Oficinas, Noruega (imagen pendiente)',
+      },
+      interior: {
+        title: 'Visualización de interiores',
+        desc: 'Visualización de interiores desarrollada para comunicar carácter espacial, materiales e intención de diseño.',
+        image: '',
+        alt: 'Render interior — Oficinas, Noruega (imagen pendiente)',
+      },
+      model: {
+        title: 'Modelos 3D estructurales',
+        desc: 'Modelado estructural tridimensional utilizado para analizar el comportamiento estructural, coordinar geometría y comunicar soluciones de ingeniería.',
+        image: '/images/visualisation/03-structural-3d-model.jpg',
+        alt: 'Modelo estructural tridimensional de un edificio de hormigón armado',
+      },
+      technical: {
+        title: 'Visualización técnica',
+        desc: 'Modelos estructurales e información técnica de construcción desarrollados para comunicar claramente la intención de diseño y apoyar la ejecución.',
+        image: '/images/visualisation/04-technical-visualisation.jpg',
+        alt: 'Estructura de transferencia de hormigón armado en etapa de obra',
+      },
     },
   },
   process: {
@@ -158,21 +182,21 @@ const dict: Dictionary = {
   },
   about: {
     title: 'Sobre Civera',
-    p1: 'Civera Engineering es un estudio colaborativo de ingeniería civil y estructural que brinda diseño, cálculo y documentación técnica para edificios y proyectos industriales.',
-    p2: 'El estudio combina experiencia independiente en edificios de hormigón armado con antecedentes en proyectos industriales, de acero estructural y entregas multidisciplinarias.',
-    p3: 'Nuestra estructura flexible de equipo nos permite reunir los especialistas adecuados para cada encargo, manteniendo comunicación directa y entrega técnica coordinada.',
+    p1: 'Civera Engineering es una práctica colaborativa de ingeniería enfocada en soluciones estructurales, civiles y multidisciplinarias para edificios y proyectos industriales.',
+    p2: 'Nuestro trabajo combina análisis estructural, diseño práctico y documentación técnica clara, cubriendo estructuras de hormigón armado y acero, fundaciones y soporte de ingeniería durante el desarrollo del proyecto y la construcción.',
+    p3: 'Civera reúne a profesionales con experiencia previa en diseño de edificios residenciales y proyectos industriales en las disciplinas civil, estructural, mecánica y de piping. Nuestro enfoque combina rigor técnico, constructibilidad y estrecha coordinación con arquitectos, contratistas y otras disciplinas de ingeniería.',
   },
   contact: {
     aboutTitle: 'Sobre Civera',
     aboutText:
-      'Civera Engineering es un estudio colaborativo de ingeniería civil y estructural que brinda diseño, cálculos y documentación técnica para edificios y proyectos industriales.',
+      'Civera Engineering es una práctica colaborativa de ingeniería enfocada en soluciones estructurales, civiles y multidisciplinarias para edificios y proyectos industriales.',
     aboutText2:
-      'El estudio combina experiencia independiente en edificios de hormigón armado con antecedentes industriales, de acero estructural y de entrega de proyectos internacionales de sus profesionales.',
+      'Nuestro trabajo combina análisis estructural, diseño práctico y documentación técnica clara en estructuras de hormigón armado y acero, fundaciones y soporte de ingeniería.',
     aboutText3:
-      'Nuestra estructura flexible de equipo nos permite reunir los especialistas adecuados para cada encargo, manteniendo comunicación directa y entrega técnica coordinada.',
+      'Nuestro enfoque combina rigor técnico, constructibilidad y estrecha coordinación con arquitectos, contratistas y otras disciplinas de ingeniería.',
     formTitle: 'Consulte su proyecto',
     formIntro:
-      'Cuéntenos sobre su proyecto, los entregables requeridos y el cronograma esperado. Revisaremos la información y le propondremos un alcance de ingeniería adecuado.',
+      'Cuéntenos sobre su proyecto y sus requerimientos. Revisaremos la información disponible y le propondremos un alcance de ingeniería adecuado.',
     fields: {
       name: 'Nombre',
       email: 'Email',
@@ -200,6 +224,8 @@ const dict: Dictionary = {
     email: 'info@civera.engineering',
     linkedin: 'LinkedIn',
     location: 'Operamos internacionalmente',
+    operatingTitle: 'Operamos internacionalmente',
+    operatingText: 'Con base entre Europa y Argentina, damos soporte a proyectos en mercados internacionales.',
     validation: {
       required: 'Este campo es obligatorio.',
       email: 'Ingrese un email válido.',
@@ -208,7 +234,7 @@ const dict: Dictionary = {
     },
   },
   footer: {
-    tagline: 'Ingeniería estructural para edificios y proyectos industriales.',
+    tagline: 'Ingeniería estructural y multidisciplinaria para edificios y proyectos industriales.',
     navTitle: 'Navegar',
     contactTitle: 'Contacto',
     legal: 'Aviso legal',
@@ -219,42 +245,31 @@ const dict: Dictionary = {
     breadcrumbHome: 'Inicio',
     breadcrumbProjects: 'Proyectos',
     category: 'Categoría del proyecto',
+    previousExperienceNote:
+      'Este proyecto forma parte de la experiencia profesional previa del equipo de ingeniería que hoy opera bajo Civera.',
     keyInfoTitle: 'Información clave del proyecto',
     keyInfo: {
+      name: 'Nombre del proyecto',
       type: 'Tipo de proyecto',
       location: 'Ubicación',
+      detailedLocation: 'Ubicación detallada',
       status: 'Estado',
-      levels: 'Cantidad de niveles',
-      area: 'Superficie aproximada',
+      year: 'Año',
+      period: 'Período del proyecto',
+      levels: 'Niveles',
+      floorDimensions: 'Dimensiones aproximadas por planta',
+      typicalFloorArea: 'Superficie de planta típica',
+      area: 'Superficie estructural aproximada',
+      residentialLayout: 'Configuración residencial',
+      elevators: 'Ascensores',
+      software: 'Software',
       structural: 'Sistema estructural',
       foundation: 'Sistema de fundaciones',
-      scope: 'Alcance de servicios',
-      software: 'Software',
-      year: 'Año',
     },
     overviewTitle: 'Resumen del proyecto',
-    overview:
-      'Este proyecto incluyó el desarrollo estructural de un edificio residencial de hormigón armado de varios niveles, incluyendo diseño de fundaciones, modelado estructural, documentación técnica y coordinación multidisciplinaria.',
-    overviewNote: 'La información específica final se completará luego de la revisión técnica.',
     scopeTitle: 'Alcance de los servicios',
-    scopeItems: [
-      'Desarrollo del concepto estructural',
-      'Análisis y diseño estructural',
-      'Modelado estructural de hormigón armado',
-      'Diseño de fundaciones',
-      'Diseño de armaduras',
-      'Planos estructurales',
-      'Coordinación multidisciplinaria',
-      'Revisión técnica',
-      'Soporte durante la construcción',
-      'Supervisión de obra, cuando corresponda',
-    ],
     challengeTitle: 'Desafío de ingeniería y enfoque',
-    challenge1:
-      'El diseño estructural requirió coordinación entre el planteo arquitectónico, el sistema de hormigón armado y la solución de fundación adoptada.',
-    challenge2:
-      'El enfoque de ingeniería priorizó la eficiencia estructural, la constructibilidad, la claridad de la documentación técnica y la coordinación durante la ejecución.',
-    galleryTitle: 'Galería técnica de imágenes',
+    galleryTitle: 'Galería de imágenes',
     galleryCategories: {
       completed: 'Edificio terminado',
       construction: 'Avance de obra',
@@ -266,10 +281,6 @@ const dict: Dictionary = {
       details: 'Detalles técnicos',
     },
     civeraTitle: 'Alcance de Civera',
-    civera1:
-      'El proyecto fue desarrollado a través de la práctica independiente previa de ingeniería de Franco Tocci en Argentina y forma parte de la experiencia profesional que hoy presenta Civera Engineering.',
-    civera2:
-      'El alcance incluyó coordinación estructural, diseño de fundaciones y superestructura, documentación técnica y soporte durante la construcción.',
     confidentialityTitle: 'Confidencialidad',
     confidentiality:
       'La información, planos e imágenes del proyecto pueden estar parcialmente anonimizados para proteger la confidencialidad del cliente y la información contractual.',
@@ -279,6 +290,42 @@ const dict: Dictionary = {
     navDiscuss: 'Consultar un proyecto similar',
     placeholder: '[Información a proporcionar]',
     imagePlaceholder: 'Imagen de referencia',
+  },
+  legal: {
+    title: 'Aviso legal',
+    p1: 'CIVERA es una práctica de ingeniería y diseño técnico enfocada en servicios de ingeniería estructural, civil y multidisciplinaria.',
+    p2: 'Este sitio web presenta los servicios de CIVERA, sus capacidades técnicas, su trabajo de diseño y la experiencia profesional previa de los profesionales que hoy colaboran bajo el nombre CIVERA.',
+    p3: 'La información y el contenido técnico de los proyectos presentados en este sitio se proporcionan con fines informativos y de portfolio. No constituyen asesoramiento de ingeniería específico de un proyecto ni sustituyen los cálculos, la documentación técnica o la evaluación profesional realizados específicamente para un proyecto en particular.',
+    p4: 'Salvo indicación en contrario, el contenido del sitio, textos, gráficos y material visual original no puede reproducirse, modificarse ni utilizarse comercialmente sin autorización previa del titular de los derechos correspondientes.',
+    p5: 'La información de contacto oficial se ofrece a través del correo electrónico publicado en este sitio.',
+    temporaryNote:
+      'CIVERA aún no se encuentra formalmente registrada como empresa. Los datos societarios (número de registro, VAT ID, director gerente, domicilio fiscal) se incorporarán una vez completada la registración formal.',
+  },
+  privacy: {
+    title: 'Política de privacidad',
+    intro:
+      'CIVERA respeta la privacidad de los usuarios que visitan este sitio web y procesa información personal únicamente cuando es necesario para responder consultas y evaluar potenciales proyectos de ingeniería o relaciones comerciales.',
+    contactFormTitle: 'Formulario de contacto',
+    contactFormText:
+      'Cuando un usuario contacta a CIVERA a través del sitio web, información como nombre, empresa, email, país, información del proyecto, mensaje y documentos cargados voluntariamente puede ser procesada con el fin de revisar y responder la consulta.',
+    useOfInformationTitle: 'Uso de la información',
+    useOfInformationText:
+      'La información enviada a través del sitio será utilizada únicamente en relación con la consulta correspondiente, el potencial proyecto o la comunicación comercial, y no será vendida ni utilizada con fines de marketing no relacionados.',
+    fileUploadsTitle: 'Archivos adjuntos',
+    fileUploadsText:
+      'Los documentos enviados voluntariamente a través del formulario de consulta se utilizan únicamente para evaluar y responder a la consulta correspondiente. Se recomienda evitar el envío de información personal, sensible o confidencial innecesaria.',
+    retentionTitle: 'Conservación de datos',
+    retentionText:
+      'La información personal se conservará únicamente durante el tiempo razonablemente necesario para responder consultas, evaluar potenciales proyectos y gestionar comunicaciones comerciales relevantes.',
+    providersTitle: 'Proveedores de servicios',
+    providersText:
+      'Los proveedores de hosting, correo electrónico y procesamiento de formularios pueden procesar información técnica o de contacto limitada cuando sea necesario para operar el sitio y prestar estos servicios.',
+    userRequestsTitle: 'Solicitudes de usuarios',
+    userRequestsText:
+      'Los usuarios pueden solicitar el acceso, la corrección o la eliminación de la información personal que hayan enviado, contactando a CIVERA a través del email oficial publicado en el sitio web.',
+    updatesTitle: 'Actualizaciones futuras',
+    updatesText:
+      'Esta Política de privacidad podrá ser actualizada a medida que evolucione la estructura legal de CIVERA, la funcionalidad del sitio y los proveedores de servicios.',
   },
   common: {
     skipToContent: 'Saltar al contenido principal',

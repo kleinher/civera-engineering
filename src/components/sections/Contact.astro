@@ -134,9 +134,12 @@ const projectTypeKeys = [
           </a>
         </li>
         <li>
-          <span class="static">
+          <span class="static op">
             <Icon name="map-pin" size={18} strokeWidth={1.5} />
-            <span>{t.contact.location}</span>
+            <span>
+              <strong class="op-title">{t.contact.operatingTitle}</strong>
+              <span class="op-text">{t.contact.operatingText}</span>
+            </span>
           </span>
         </li>
       </ul>
@@ -429,4 +432,23 @@ const projectTypeKeys = [
     transition: color .18s ease;
   }
   .reach a:hover { color: var(--color-white); }
+  .reach .op { align-items: flex-start; }
+  .reach .op-title {
+    display: block;
+    font-size: 0.6875rem;
+    letter-spacing: var(--tracking-widest);
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--color-white);
+    margin-bottom: 3px;
+  }
+  .reach .op-text {
+    display: block;
+    font-size: 0.75rem;
+    color: rgb(255 255 255 / 0.7);
+    line-height: 1.5;
+    font-weight: 400;
+    letter-spacing: 0;
+    text-transform: none;
+  }
 </style>

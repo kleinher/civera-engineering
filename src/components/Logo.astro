@@ -2,49 +2,113 @@
 interface Props {
   variant?: 'dark' | 'light';
   href?: string;
+  compact?: boolean;
 }
-const { variant = 'dark', href = '/' } = Astro.props;
+const { variant = 'dark', href = '/', compact = false } = Astro.props;
 const primary = variant === 'dark' ? 'var(--color-navy-900)' : 'var(--color-white)';
-const secondary = variant === 'dark' ? 'var(--color-mute-500)' : 'rgb(255 255 255 / 0.75)';
+const accent = 'var(--color-brass-500)';
+const sub = variant === 'dark' ? 'var(--color-mute-500)' : 'rgb(255 255 255 / 0.72)';
 ---
-<!-- Insert final SVG logo here: replace this text-based mark with civera-logo.svg / civera-logo-white.svg -->
-<a href={href} class="logo" aria-label="Civera Engineering — Home">
-  <span class="logo-mark" aria-hidden="true">
-    <svg viewBox="0 0 40 40" width="34" height="34" fill="none" stroke={primary} stroke-width="1.6" stroke-linecap="square">
-      <rect x="4" y="4" width="32" height="32" />
-      <line x1="4" y1="20" x2="36" y2="20" />
-      <line x1="20" y1="4" x2="20" y2="36" />
-      <line x1="4" y1="4" x2="36" y2="36" stroke={secondary} stroke-dasharray="2 3" />
-    </svg>
+<a href={href} class="logo" aria-label="Civera — Engineering the built environment">
+  <span class="wordmark" style={`color:${primary};`}>
+    <span class="letter">C</span>
+    <span class="letter letter-i" aria-hidden="true">
+      <span class="stem"></span>
+      <span class="cap" style={`background:${accent};`}></span>
+    </span>
+    <span class="sr-only">I</span>
+    <span class="letter">V</span>
+    <span class="letter">E</span>
+    <span class="letter">R</span>
+    <span class="letter letter-a" aria-hidden="true">
+      <span class="a-glyph">A</span>
+      <span class="a-cut" style={`background:${accent};`}></span>
+    </span>
+    <span class="sr-only">A</span>
   </span>
-  <span class="logo-text">
-    <span class="logo-name" style={`color:${primary};`}>CIVERA</span>
-    <span class="logo-sub" style={`color:${secondary};`}>ENGINEERING</span>
-  </span>
+  {!compact && (
+    <span class="tagline" style={`color:${sub};`}>Engineering the Built Environment</span>
+  )}
 </a>
 
 <style>
   .logo {
     display: inline-flex;
-    align-items: center;
-    gap: 0.65rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 3px;
     text-decoration: none;
     line-height: 1;
   }
-  .logo-mark { display: inline-flex; }
-  .logo-text {
+  .wordmark {
     display: inline-flex;
-    flex-direction: column;
-    gap: 2px;
-  }
-  .logo-name {
-    font-size: 1rem;
-    font-weight: 700;
+    align-items: flex-end;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 1.375rem;
     letter-spacing: 0.14em;
+    line-height: 1;
   }
-  .logo-sub {
-    font-size: 0.625rem;
+  .letter {
+    display: inline-block;
+    position: relative;
+  }
+  .letter-i {
+    width: 0.28em;
+    height: 1em;
+    position: relative;
+    margin-inline: 0.02em;
+  }
+  .letter-i .stem {
+    position: absolute;
+    left: 50%;
+    top: 15%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 85%;
+    background: currentColor;
+  }
+  .letter-i .cap {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%);
+    width: 6px;
+    height: 6px;
+  }
+  .letter-a {
+    position: relative;
+    display: inline-block;
+  }
+  .letter-a .a-glyph {
+    display: inline-block;
+  }
+  .letter-a .a-cut {
+    position: absolute;
+    left: 20%;
+    right: 20%;
+    bottom: 32%;
+    height: 2px;
+  }
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    white-space: nowrap;
+    border: 0;
+  }
+  .tagline {
+    font-size: 0.5625rem;
     font-weight: 500;
     letter-spacing: 0.32em;
+    text-transform: uppercase;
+  }
+  @media (min-width: 48rem) {
+    .wordmark { font-size: 1.5rem; }
+    .tagline { font-size: 0.625rem; }
   }
 </style>

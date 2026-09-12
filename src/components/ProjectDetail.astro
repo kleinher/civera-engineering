@@ -18,22 +18,36 @@ const t = useTranslations(locale);
 const home = localisePath('/', locale);
 const projectHref = (slug: string) => localisePath(`/projects/${slug}/`, locale);
 
+const info = entry.data.keyInfo;
 const keyInfoRows = [
-  { key: 'type', value: entry.data.keyInfo.type },
-  { key: 'location', value: entry.data.keyInfo.location },
-  { key: 'status', value: entry.data.keyInfo.status },
-  { key: 'levels', value: entry.data.keyInfo.levels },
-  { key: 'area', value: entry.data.keyInfo.area },
-  { key: 'structural', value: entry.data.keyInfo.structural },
-  { key: 'foundation', value: entry.data.keyInfo.foundation },
-  { key: 'scope', value: entry.data.keyInfo.scope },
-  { key: 'software', value: entry.data.keyInfo.software },
-  { key: 'year', value: entry.data.keyInfo.year },
+  { key: 'name', value: info.name },
+  { key: 'type', value: info.type },
+  { key: 'location', value: info.location },
+  { key: 'detailedLocation', value: info.detailedLocation },
+  { key: 'status', value: info.status },
+  { key: 'year', value: info.year },
+  { key: 'period', value: info.period },
+  { key: 'levels', value: info.levels },
+  { key: 'floorDimensions', value: info.floorDimensions },
+  { key: 'typicalFloorArea', value: info.typicalFloorArea },
+  { key: 'area', value: info.area },
+  { key: 'residentialLayout', value: info.residentialLayout },
+  { key: 'elevators', value: info.elevators },
+  { key: 'software', value: info.software },
 ] as const;
 
-const gallery = entry.data.gallery.length
-  ? entry.data.gallery
-  : (['completed', 'construction', 'model', 'render', 'drawings', 'foundation'] as const).map((c) => ({ category: c, src: undefined, alt: undefined }));
+const systemRows = [
+  { key: 'structural', value: info.structural },
+  { key: 'foundation', value: info.foundation },
+] as const;
+
+const overview = entry.data.overview ?? [];
+const scopeItems = entry.data.scopeItems ?? [];
+const challenge = entry.data.challenge ?? [];
+const civeraScope = entry.data.civeraScope ?? [];
+
+const gallery = entry.data.gallery ?? [];
+const heroSrc = entry.data.heroImage ?? entry.data.cover;
 
 const homeBase = home;
 ---
@@ -42,7 +56,11 @@ const homeBase = home;
     <!-- Project Hero -->
     <header class="p-hero">
       <div class="p-hero-media" aria-hidden="true">
-        <PlaceholderImage label={entry.data.title} ratio="16 / 6" variant="dark" />
+        {heroSrc ? (
+          <img src={heroSrc} alt="" loading="eager" />
+        ) : (
+          <PlaceholderImage label={entry.data.title} ratio="16 / 6" variant="dark" />
+        )}
       </div>
       <div class="p-hero-overlay" aria-hidden="true"></div>
       <div class="container-page p-hero-inner">
@@ -55,77 +73,107 @@ const homeBase = home;
         </nav>
         <p class="eyebrow light">{entry.data.category}</p>
         <h1>{entry.data.title}</h1>
+        {entry.data.subtitle && <p class="subtitle">{entry.data.subtitle}</p>}
         <p class="lead">{entry.data.excerpt}</p>
       </div>
     </header>
+
+    <!-- Previous-experience note -->
+    <p class="container-page prev-note">{t.project.previousExperienceNote}</p>
 
     <div class="container-page grid">
       <!-- Key project information -->
       <aside class="key-info">
         <h2 class="panel-title">{t.project.keyInfoTitle}</h2>
         <dl>
-          {keyInfoRows.map((row) => (
+          {keyInfoRows.filter((r) => r.value).map((row) => (
             <div class="row">
               <dt>{t.project.keyInfo[row.key]}</dt>
-              <dd>{row.value ?? t.project.placeholder}</dd>
+              <dd>{row.value}</dd>
             </div>
           ))}
         </dl>
+        {(info.structural || info.foundation) && (
+          <div class="systems">
+            {systemRows.filter((r) => r.value).map((row) => (
+              <div class="system-row">
+                <dt>{t.project.keyInfo[row.key]}</dt>
+                <dd>{row.value}</dd>
+              </div>
+            ))}
+          </div>
+        )}
       </aside>
 
       <div class="main-col">
         <!-- Overview -->
-        <section class="block">
-          <h2 class="block-title">{t.project.overviewTitle}</h2>
-          <p>{t.project.overview}</p>
-          <p class="fine">{t.project.overviewNote}</p>
-        </section>
+        {overview.length > 0 && (
+          <section class="block">
+            <h2 class="block-title">{t.project.overviewTitle}</h2>
+            {overview.map((p) => (<p>{p}</p>))}
+          </section>
+        )}
 
         <!-- Scope -->
-        <section class="block">
-          <h2 class="block-title">{t.project.scopeTitle}</h2>
-          <ul class="check-list">
-            {t.project.scopeItems.map((s) => (<li>{s}</li>))}
-          </ul>
-        </section>
+        {scopeItems.length > 0 && (
+          <section class="block">
+            <h2 class="block-title">{t.project.scopeTitle}</h2>
+            <ul class="check-list scope-cols">
+              {scopeItems.map((s) => (<li>{s}</li>))}
+            </ul>
+          </section>
+        )}
 
         <!-- Challenge -->
-        <section class="block">
-          <h2 class="block-title">{t.project.challengeTitle}</h2>
-          <p>{t.project.challenge1}</p>
-          <p>{t.project.challenge2}</p>
-        </section>
+        {challenge.length > 0 && (
+          <section class="block">
+            <h2 class="block-title">{t.project.challengeTitle}</h2>
+            {challenge.map((p) => (<p>{p}</p>))}
+          </section>
+        )}
       </div>
     </div>
 
     <!-- Gallery -->
-    <section class="gallery-section container-page">
-      <h2 class="block-title">{t.project.galleryTitle}</h2>
-      <ul class="gallery" data-gallery>
-        {gallery.map((g, i) => (
-          <li>
-            <button
-              type="button"
-              class="tile"
-              data-lightbox-trigger
-              data-index={i}
-              data-label={t.project.galleryCategories[g.category]}
-              aria-label={t.project.galleryCategories[g.category]}
-            >
-              <PlaceholderImage label={t.project.galleryCategories[g.category]} ratio="4 / 3" variant={g.category === 'drawings' || g.category === 'foundation' || g.category === 'details' ? 'blueprint' : 'light'} />
-              <span class="caption">{t.project.galleryCategories[g.category]}</span>
-            </button>
-          </li>
-        ))}
-      </ul>
-    </section>
+    {gallery.length > 0 && (
+      <section class="gallery-section container-page">
+        <h2 class="block-title center">{t.project.galleryTitle}</h2>
+        <ul class="gallery" data-gallery>
+          {gallery.map((g, i) => (
+            <li class={g.feature ? 'is-feature' : ''}>
+              <button
+                type="button"
+                class="tile"
+                data-lightbox-trigger
+                data-index={i}
+                data-src={g.src ?? ''}
+                data-label={g.caption ?? t.project.galleryCategories[g.category]}
+                data-alt={g.alt ?? ''}
+                aria-label={g.alt ?? t.project.galleryCategories[g.category]}
+              >
+                {g.src ? (
+                  <img src={g.src} alt={g.alt ?? ''} loading="lazy" />
+                ) : (
+                  <PlaceholderImage label={t.project.galleryCategories[g.category]} ratio="4 / 3" variant={g.category === 'drawings' || g.category === 'foundation' || g.category === 'details' ? 'blueprint' : 'light'} />
+                )}
+                <span class="caption">
+                  <span class="cat">{t.project.galleryCategories[g.category]}</span>
+                  {g.caption && <span class="cap-text">{g.caption}</span>}
+                </span>
+              </button>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
 
     <!-- Civera scope -->
-    <section class="container-page block civera">
-      <h2 class="block-title">{t.project.civeraTitle}</h2>
-      <p>{t.project.civera1}</p>
-      <p>{t.project.civera2}</p>
-    </section>
+    {civeraScope.length > 0 && (
+      <section class="container-page block civera">
+        <h2 class="block-title">{t.project.civeraTitle}</h2>
+        {civeraScope.map((p) => (<p>{p}</p>))}
+      </section>
+    )}
 
     <!-- Confidentiality -->
     <section class="container-page confidentiality">
@@ -197,13 +245,21 @@ const homeBase = home;
     if (!frame || !triggers.length) return;
     currentIndex = ((i % triggers.length) + triggers.length) % triggers.length;
     const trigger = triggers[currentIndex];
-    const cloned = trigger.querySelector('.ph, img, picture');
+    const src = trigger.getAttribute('data-src');
+    const alt = trigger.getAttribute('data-alt') || '';
+    const label = trigger.getAttribute('data-label') || '';
     frame.innerHTML = '';
-    if (cloned) {
-      const clone = cloned.cloneNode(true);
-      frame.appendChild(clone);
+    if (src) {
+      const img = document.createElement('img');
+      img.src = src;
+      img.alt = alt;
+      img.decoding = 'async';
+      frame.appendChild(img);
+    } else {
+      const cloned = trigger.querySelector('.ph');
+      if (cloned) frame.appendChild(cloned.cloneNode(true));
     }
-    if (captionEl) captionEl.textContent = trigger.getAttribute('data-label') || '';
+    if (captionEl) captionEl.textContent = label;
   }
 
   function open(i) {
@@ -246,7 +302,7 @@ const homeBase = home;
 
   .p-hero {
     position: relative;
-    min-height: 420px;
+    min-height: 480px;
     display: flex;
     align-items: stretch;
     overflow: hidden;
@@ -258,10 +314,17 @@ const homeBase = home;
     inset: 0;
     z-index: 0;
   }
+  .p-hero-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
   .p-hero-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(120deg, rgba(5,18,41,0.94), rgba(5,18,41,0.7) 60%, rgba(5,18,41,0.35));
+    background: linear-gradient(120deg, rgba(5,18,41,0.94), rgba(5,18,41,0.72) 60%, rgba(5,18,41,0.42));
     z-index: 1;
   }
   .p-hero-inner {
@@ -287,29 +350,44 @@ const homeBase = home;
   .breadcrumb a:hover { color: var(--color-white); }
   .breadcrumb li + li::before { content: "/"; margin-right: 0.5rem; color: rgb(255 255 255 / 0.4); }
 
-  .eyebrow.light { color: var(--color-accent-400); }
+  .eyebrow.light { color: var(--color-brass-300); }
   .p-hero h1 {
     font-size: clamp(1.75rem, 1.1rem + 2vw, 2.5rem);
-    margin: 0.75rem 0 0.75rem;
+    margin: 0.75rem 0 0.35rem;
     letter-spacing: 0.02em;
     text-transform: uppercase;
   }
+  .subtitle {
+    color: rgb(255 255 255 / 0.72);
+    margin: 0 0 0.75rem;
+    font-size: 0.9375rem;
+  }
   .lead {
-    max-width: 60ch;
+    max-width: 62ch;
     font-size: 1rem;
     line-height: 1.55;
-    color: rgb(255 255 255 / 0.85);
+    color: rgb(255 255 255 / 0.88);
     margin: 0;
+  }
+
+  .prev-note {
+    margin-top: 1.75rem;
+    padding: 0.75rem 0;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    color: var(--color-mute-500);
+    font-style: italic;
+    border-bottom: 1px solid var(--color-line-200);
   }
 
   .grid {
     display: grid;
     grid-template-columns: 1fr;
     gap: 2.5rem;
-    padding-top: 3rem;
+    padding-top: 2.5rem;
   }
   @media (min-width: 60rem) {
-    .grid { grid-template-columns: 320px 1fr; gap: 3rem; padding-top: 4rem; }
+    .grid { grid-template-columns: 340px 1fr; gap: 3rem; padding-top: 3rem; }
   }
   .key-info {
     background: var(--color-surface-50);
@@ -334,34 +412,54 @@ const homeBase = home;
     padding-bottom: 0.5rem;
     border-bottom: 2px solid var(--color-line-200);
   }
+  .block-title.center { text-align: center; border-bottom: 0; }
+  .block-title.center::after {
+    content: "";
+    display: block;
+    width: 44px;
+    height: 2px;
+    background: var(--color-accent-500);
+    margin: 0.6rem auto 0;
+  }
   .key-info dl { margin: 0; display: flex; flex-direction: column; }
   .key-info .row {
     display: flex;
     justify-content: space-between;
     gap: 1rem;
-    padding: 0.625rem 0;
+    padding: 0.5rem 0;
     border-bottom: 1px dashed var(--color-line-200);
     font-size: 0.8125rem;
   }
   .key-info dt { color: var(--color-mute-500); font-weight: 500; }
-  .key-info dd { color: var(--color-navy-900); font-weight: 600; text-align: right; margin: 0; }
+  .key-info dd { color: var(--color-navy-900); font-weight: 600; text-align: right; margin: 0; max-width: 60%; }
 
-  .main-col { display: flex; flex-direction: column; gap: 2.25rem; }
+  .systems { margin-top: 1rem; display: flex; flex-direction: column; gap: 0.75rem; }
+  .system-row dt {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: var(--tracking-widest);
+    text-transform: uppercase;
+    color: var(--color-mute-500);
+    margin-bottom: 0.25rem;
+  }
+  .system-row dd {
+    margin: 0;
+    font-size: 0.8125rem;
+    color: var(--color-ink-700);
+    line-height: 1.55;
+  }
+
+  .main-col { display: flex; flex-direction: column; gap: 2.5rem; }
   .block p {
     font-size: 0.9375rem;
-    line-height: 1.7;
-    color: var(--color-ink-500);
-    margin: 0 0 0.75rem;
+    line-height: 1.75;
+    color: var(--color-ink-700);
+    margin: 0 0 0.85rem;
   }
-  .block .fine {
-    font-size: 0.8125rem;
-    color: var(--color-mute-500);
-    margin-top: 0.5rem;
-  }
+  .scope-cols { display: grid; grid-template-columns: 1fr; gap: 0.5rem 1.5rem; }
+  @media (min-width: 40rem) { .scope-cols { grid-template-columns: 1fr 1fr; } }
 
-  .gallery-section {
-    padding-top: 3rem;
-  }
+  .gallery-section { padding-top: 3.5rem; }
   .gallery {
     list-style: none;
     margin: 0;
@@ -372,7 +470,7 @@ const homeBase = home;
   }
   @media (min-width: 40rem) { .gallery { grid-template-columns: repeat(2, 1fr); } }
   @media (min-width: 60rem) { .gallery { grid-template-columns: repeat(3, 1fr); } }
-  @media (min-width: 80rem) { .gallery { grid-template-columns: repeat(4, 1fr); } }
+  .gallery .is-feature { grid-column: 1 / -1; }
   .tile {
     background: transparent;
     padding: 0;
@@ -381,19 +479,37 @@ const homeBase = home;
     display: block;
     width: 100%;
     text-align: left;
-    transition: box-shadow .2s ease;
+    transition: box-shadow .2s ease, transform .2s ease;
+    overflow: hidden;
   }
-  .tile:hover { box-shadow: var(--shadow-cardHover); }
-  .tile .caption {
+  .tile:hover { box-shadow: var(--shadow-cardHover); transform: translateY(-1px); }
+  .tile img {
     display: block;
-    padding: 0.625rem 0.875rem;
-    font-size: 0.6875rem;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    object-position: center;
+  }
+  .is-feature .tile img { aspect-ratio: 16 / 9; }
+  .tile .caption {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 0.75rem 0.875rem;
+    background: var(--color-white);
+    border-top: 1px solid var(--color-line-200);
+  }
+  .tile .cat {
+    font-size: 0.625rem;
     font-weight: 700;
     letter-spacing: var(--tracking-widest);
     text-transform: uppercase;
-    color: var(--color-navy-900);
-    background: var(--color-white);
-    border-top: 1px solid var(--color-line-200);
+    color: var(--color-accent-500);
+  }
+  .tile .cap-text {
+    font-size: 0.75rem;
+    color: var(--color-ink-700);
+    line-height: 1.4;
   }
 
   .civera { padding-top: 3rem; }
@@ -516,14 +632,15 @@ const homeBase = home;
     align-items: center;
     justify-content: center;
   }
+  .lb-frame img { max-width: 100%; max-height: 78vh; object-fit: contain; }
   .lb-frame :global(.ph) { max-width: 100%; max-height: 78vh; }
   .lb-caption {
     grid-column: 1 / -1;
     font-size: 0.75rem;
     letter-spacing: var(--tracking-widest);
-    text-transform: uppercase;
     text-align: center;
-    color: rgb(255 255 255 / 0.75);
+    color: rgb(255 255 255 / 0.85);
     margin: 0.75rem 0 0;
+    max-width: 60ch;
   }
 </style>

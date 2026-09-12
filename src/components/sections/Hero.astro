@@ -5,20 +5,38 @@ interface Props { locale: Locale; }
 const { locale } = Astro.props;
 const t = useTranslations(locale);
 ---
-<!--
-  Final hero image: assets/images/hero/civera-hero.jpg
-  Recommended composition:
-   - reinforced-concrete residential building at left/centre;
-   - industrial steel structure at right;
-   - professional architectural photography, no construction workers or generic stock imagery.
--->
 <section class="hero" aria-label="Introduction">
   <div class="hero-media" aria-hidden="true">
-    <div class="hero-placeholder"></div>
+    <svg class="hero-grid" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" role="presentation">
+      <defs>
+        <pattern id="dot-grid" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+          <circle cx="1" cy="1" r="1" fill="rgba(255,255,255,0.08)" />
+        </pattern>
+        <linearGradient id="line-fade" x1="0" x2="1" y1="0" y2="0">
+          <stop offset="0" stop-color="rgba(255,255,255,0)" />
+          <stop offset="0.35" stop-color="rgba(255,255,255,0.12)" />
+          <stop offset="1" stop-color="rgba(255,255,255,0)" />
+        </linearGradient>
+      </defs>
+      <rect width="1600" height="900" fill="url(#dot-grid)" />
+      <g stroke="url(#line-fade)" stroke-width="1">
+        <line x1="0" y1="220" x2="1600" y2="220" />
+        <line x1="0" y1="450" x2="1600" y2="450" />
+        <line x1="0" y1="680" x2="1600" y2="680" />
+      </g>
+      <g stroke="rgba(184,153,104,0.35)" stroke-width="1">
+        <line x1="1080" y1="120" x2="1080" y2="820" />
+      </g>
+      <g stroke="rgba(255,255,255,0.14)" stroke-dasharray="4 6" stroke-width="1">
+        <line x1="1240" y1="120" x2="1240" y2="820" />
+        <line x1="1400" y1="120" x2="1400" y2="820" />
+      </g>
+    </svg>
   </div>
   <div class="hero-overlay" aria-hidden="true"></div>
   <div class="container-page hero-inner">
     <div class="hero-content reveal">
+      <span class="hero-accent" aria-hidden="true"></span>
       <h1>
         <span>{t.hero.line1}</span>
         <span>{t.hero.line2}</span>
@@ -28,7 +46,7 @@ const t = useTranslations(locale);
       <p class="categories">{t.hero.categories}</p>
       <div class="actions">
         <a href="#services" class="btn btn-primary">{t.hero.primary}</a>
-        <a href="#contact" class="btn btn-secondary">{t.hero.secondary}</a>
+        <a href="#projects" class="btn btn-secondary">{t.hero.secondary}</a>
       </div>
     </div>
   </div>
@@ -41,34 +59,29 @@ const t = useTranslations(locale);
     display: flex;
     align-items: stretch;
     overflow: hidden;
-    background: var(--color-navy-900);
+    background: linear-gradient(180deg, #0a2247 0%, #051229 100%);
   }
   .hero-media {
     position: absolute;
     inset: 0;
     z-index: 0;
-    background-image: var(--hero-image, none);
-    background-size: cover;
-    background-position: center right;
   }
-  .hero-placeholder {
+  .hero-grid {
     position: absolute;
     inset: 0;
-    background:
-      linear-gradient(135deg, rgba(255,255,255,0.03) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.03) 50%, rgba(255,255,255,0.03) 75%, transparent 75%, transparent),
-      linear-gradient(180deg, #12315c, #071b33 70%);
-    background-size: 32px 32px, auto;
+    width: 100%;
+    height: 100%;
+    display: block;
   }
   .hero-overlay {
     position: absolute;
     inset: 0;
     background: linear-gradient(
       100deg,
-      rgba(5,18,41,0.98) 0%,
-      rgba(5,18,41,0.92) 32%,
-      rgba(5,18,41,0.55) 55%,
-      rgba(5,18,41,0.15) 75%,
-      rgba(5,18,41,0) 100%
+      rgba(5,18,41,0.90) 0%,
+      rgba(5,18,41,0.72) 42%,
+      rgba(5,18,41,0.35) 75%,
+      rgba(5,18,41,0.2) 100%
     );
     z-index: 1;
   }
@@ -80,8 +93,16 @@ const t = useTranslations(locale);
     padding-block: 4rem;
   }
   .hero-content {
-    max-width: 620px;
+    max-width: 640px;
     color: var(--color-white);
+    position: relative;
+  }
+  .hero-accent {
+    display: block;
+    width: 36px;
+    height: 2px;
+    background: var(--color-brass-500);
+    margin-bottom: 1.5rem;
   }
   h1 {
     font-size: clamp(1.75rem, 1.1rem + 2.6vw, 3rem);
@@ -94,7 +115,7 @@ const t = useTranslations(locale);
   h1 span { display: block; }
   .lead {
     margin-top: 1.25rem;
-    max-width: 46ch;
+    max-width: 52ch;
     font-size: 1rem;
     line-height: 1.6;
     color: rgb(255 255 255 / 0.86);

@@ -1,0 +1,115 @@
+---
+import type { Locale } from '../i18n/types';
+import { useTranslations, localisePath } from '../i18n';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+interface Props {
+  locale: Locale;
+  kind: 'legal' | 'privacy';
+}
+const { locale, kind } = Astro.props;
+const t = useTranslations(locale);
+const home = localisePath('/', locale);
+---
+<BaseLayout locale={locale} title={`${kind === 'legal' ? t.legal.title : t.privacy.title} — Civera Engineering`} description={t.meta.description} homeBase={home}>
+  <article class="legal-page">
+    <header class="head">
+      <div class="container-page">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <ol>
+            <li><a href={home}>{t.project.breadcrumbHome}</a></li>
+            <li aria-current="page">{kind === 'legal' ? t.legal.title : t.privacy.title}</li>
+          </ol>
+        </nav>
+        <h1>{kind === 'legal' ? t.legal.title : t.privacy.title}</h1>
+      </div>
+    </header>
+    <div class="container-page body">
+      {kind === 'legal' && (
+        <>
+          <p>{t.legal.p1}</p>
+          <p>{t.legal.p2}</p>
+          <p>{t.legal.p3}</p>
+          <p>{t.legal.p4}</p>
+          <p>{t.legal.p5}</p>
+          <aside class="note">{t.legal.temporaryNote}</aside>
+        </>
+      )}
+      {kind === 'privacy' && (
+        <>
+          <p>{t.privacy.intro}</p>
+          <h2>{t.privacy.contactFormTitle}</h2>
+          <p>{t.privacy.contactFormText}</p>
+          <h2>{t.privacy.useOfInformationTitle}</h2>
+          <p>{t.privacy.useOfInformationText}</p>
+          <h2>{t.privacy.fileUploadsTitle}</h2>
+          <p>{t.privacy.fileUploadsText}</p>
+          <h2>{t.privacy.retentionTitle}</h2>
+          <p>{t.privacy.retentionText}</p>
+          <h2>{t.privacy.providersTitle}</h2>
+          <p>{t.privacy.providersText}</p>
+          <h2>{t.privacy.userRequestsTitle}</h2>
+          <p>{t.privacy.userRequestsText}</p>
+          <h2>{t.privacy.updatesTitle}</h2>
+          <p>{t.privacy.updatesText}</p>
+        </>
+      )}
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .legal-page { padding-bottom: 5rem; }
+  .head {
+    background: var(--color-navy-900);
+    color: var(--color-white);
+    padding: 5rem 0 3rem;
+  }
+  .breadcrumb ol {
+    list-style: none;
+    margin: 0 0 1rem;
+    padding: 0;
+    display: flex;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    color: rgb(255 255 255 / 0.65);
+  }
+  .breadcrumb a { color: rgb(255 255 255 / 0.75); text-decoration: none; }
+  .breadcrumb a:hover { color: var(--color-white); }
+  .breadcrumb li + li::before { content: "/"; margin-right: 0.5rem; color: rgb(255 255 255 / 0.4); }
+  .head h1 {
+    font-size: clamp(1.5rem, 1rem + 2vw, 2.25rem);
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    margin: 0;
+  }
+  .body {
+    padding-top: 2.5rem;
+    max-width: 780px;
+  }
+  .body p {
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    color: var(--color-ink-700);
+    margin: 0 0 1rem;
+  }
+  .body h2 {
+    font-size: 0.9375rem;
+    font-weight: 700;
+    letter-spacing: var(--tracking-widest);
+    text-transform: uppercase;
+    color: var(--color-navy-900);
+    margin: 1.75rem 0 0.75rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--color-line-200);
+  }
+  .note {
+    margin-top: 1.5rem;
+    padding: 1rem 1.25rem;
+    background: var(--color-sky-50);
+    border-left: 3px solid var(--color-accent-500);
+    font-size: 0.8125rem;
+    color: var(--color-ink-700);
+    line-height: 1.6;
+  }
+</style>

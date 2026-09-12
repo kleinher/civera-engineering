@@ -8,30 +8,36 @@ const { locale } = Astro.props;
 const t = useTranslations(locale);
 
 const cards = [
-  { key: 'residential' as const, variant: 'light' as const },
-  { key: 'renders' as const, variant: 'light' as const },
-  { key: 'model' as const, variant: 'blueprint' as const },
-  { key: 'technical' as const, variant: 'blueprint' as const },
+  { key: 'architectural' as const, variant: 'light' as const, pending: true },
+  { key: 'interior' as const, variant: 'light' as const, pending: true },
+  { key: 'model' as const, variant: 'blueprint' as const, pending: false },
+  { key: 'technical' as const, variant: 'blueprint' as const, pending: false },
 ];
 ---
 <section id="visualisation" class="visualisation">
   <div class="container-page">
     <h2 class="section-title">{t.visualisation.title}</h2>
-    <div class="layout reveal">
-      <div class="intro">
-        <p>{t.visualisation.intro}</p>
-        <ul class="check-list">
-          {t.visualisation.checklist.map((c) => (<li>{c}</li>))}
-        </ul>
-      </div>
-      <div class="cards">
-        {cards.map((c) => (
+    <p class="intro reveal">{t.visualisation.intro}</p>
+    <div class="cards reveal">
+      {cards.map((c) => {
+        const card = t.visualisation.cards[c.key];
+        return (
           <figure class="vis-card">
-            <PlaceholderImage label={t.visualisation.cards[c.key]} ratio="4 / 3" variant={c.variant} />
-            <figcaption>{t.visualisation.cards[c.key]}</figcaption>
+            <div class="media">
+              {card.image ? (
+                <img src={card.image} alt={card.alt} loading="lazy" />
+              ) : (
+                <PlaceholderImage label={card.title} ratio="4 / 3" variant={c.variant} />
+              )}
+              {c.pending && <span class="badge">Pending</span>}
+            </div>
+            <figcaption>
+              <span class="cap-title">{card.title}</span>
+              <span class="cap-desc">{card.desc}</span>
+            </figcaption>
           </figure>
-        ))}
-      </div>
+        );
+      })}
     </div>
   </div>
 </section>
@@ -42,20 +48,13 @@ const cards = [
     background: var(--color-surface-50);
     border-bottom: 1px solid var(--color-line-200);
   }
-  .layout {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 2rem;
-  }
-  @media (min-width: 60rem) {
-    .layout { grid-template-columns: 1fr 2.4fr; gap: 3rem; align-items: start; }
-  }
-  .intro p {
+  .intro {
     font-size: 0.9375rem;
     line-height: 1.65;
     color: var(--color-ink-500);
-    margin: 0 0 1.25rem;
-    max-width: 40ch;
+    max-width: 62ch;
+    margin: 0 auto 2.5rem;
+    text-align: center;
   }
   .cards {
     display: grid;
@@ -63,27 +62,62 @@ const cards = [
     gap: 1rem;
   }
   @media (min-width: 40rem) {
-    .cards { grid-template-columns: repeat(2, 1fr); }
+    .cards { grid-template-columns: repeat(2, 1fr); gap: 1.25rem; }
   }
-  @media (min-width: 60rem) {
-    .cards { grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+  @media (min-width: 72rem) {
+    .cards { grid-template-columns: repeat(4, 1fr); gap: 1.25rem; }
   }
   .vis-card {
     margin: 0;
     background: var(--color-white);
     border: 1px solid var(--color-line-200);
     overflow: hidden;
-    transition: box-shadow .2s ease;
+    transition: box-shadow .2s ease, transform .2s ease;
+    display: flex;
+    flex-direction: column;
   }
-  .vis-card:hover { box-shadow: var(--shadow-cardHover); }
+  .vis-card:hover { box-shadow: var(--shadow-cardHover); transform: translateY(-2px); }
+  .media {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+  }
+  .media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .badge {
+    position: absolute;
+    top: 0.75rem;
+    left: 0.75rem;
+    background: var(--color-brass-500);
+    color: var(--color-white);
+    font-size: 0.625rem;
+    font-weight: 700;
+    letter-spacing: var(--tracking-widest);
+    text-transform: uppercase;
+    padding: 4px 8px;
+  }
   figcaption {
-    padding: 0.75rem 0.875rem;
-    font-size: 0.6875rem;
+    padding: 0.85rem 1rem 1rem;
+    border-top: 1px solid var(--color-line-200);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+  }
+  .cap-title {
+    font-size: 0.75rem;
     font-weight: 700;
     letter-spacing: var(--tracking-widest);
     text-transform: uppercase;
     color: var(--color-navy-900);
-    text-align: center;
-    border-top: 1px solid var(--color-line-200);
+  }
+  .cap-desc {
+    font-size: 0.75rem;
+    line-height: 1.55;
+    color: var(--color-ink-500);
   }
 </style>

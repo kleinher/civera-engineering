@@ -2,7 +2,7 @@ export default {
   meta: {
     title: 'Civera Engineering — Structural Engineering for Buildings and Industrial Projects',
     description:
-      'Structural design, engineering calculations and technical documentation for reinforced concrete, structural steel, foundations and connections.',
+      'Structural, civil and multidisciplinary engineering for buildings and industrial projects: reinforced concrete, structural steel, foundations, connections and technical documentation.',
   },
   nav: {
     home: 'Home',
@@ -22,61 +22,65 @@ export default {
     line2: 'for Buildings and',
     line3: 'Industrial Projects',
     supporting:
-      'Structural design, engineering calculations and technical documentation for reinforced concrete, structural steel, foundations and connections.',
-    categories: 'Buildings · Industry · Engineering Support',
-    primary: 'View Capabilities',
-    secondary: 'Discuss a Project',
+      'Structural and multidisciplinary engineering for buildings and industrial projects, from analysis and design through technical documentation and construction support.',
+    categories: 'Buildings · Industry · Steel · Visualisation',
+    primary: 'Our Services',
+    secondary: 'View Projects',
   },
   services: {
     title: 'Our Engineering Services',
     items: {
       concrete: {
         title: 'Reinforced Concrete Structures',
-        desc: 'Design and analysis of reinforced-concrete structural systems for buildings and industrial facilities.',
+        desc: 'Analysis and design of reinforced-concrete slabs, beams, columns, structural walls, cores and complete building structural systems.',
       },
       steel: {
-        title: 'Structural Steel Structures',
-        desc: 'Design and analysis of steel structures, platforms, equipment support systems and secondary steelwork.',
+        title: 'Structural Steel',
+        desc: 'Engineering of structural steel systems for buildings and industrial applications.',
       },
       foundation: {
         title: 'Foundation Engineering',
-        desc: 'Design of shallow and deep foundation systems under static and dynamic loading conditions.',
+        desc: 'Design of reinforced-concrete foundations and supporting systems according to structural loads, project requirements and ground conditions.',
       },
       connections: {
         title: 'Steel Connections',
-        desc: 'Design and detailing of bolted and welded connections, base plates, anchor bolts and structural interfaces.',
+        desc: 'Engineering and detailing of structural steel connections for building and industrial structures.',
       },
       documentation: {
         title: 'Engineering Documentation',
-        desc: 'Calculation reports, structural drawings, reinforcement and connection details, material quantities and technical documentation.',
+        desc: 'Structural calculations, drawings, reinforcement detailing, material quantities and coordinated technical documentation.',
+      },
+      industrial: {
+        title: 'Industrial Engineering Support',
+        desc: 'Engineering support for industrial projects, including multidisciplinary coordination, technical documentation and construction-focused engineering.',
       },
     },
   },
   projects: {
-    title: 'Projects by Civera',
+    title: 'Selected Structural Projects',
     description: 'Complete structural design of a reinforced-concrete residential building.',
     view: 'View Project',
     scope: [
-      'Complete foundation design (shallow and deep options)',
       'Complete reinforced-concrete structure design',
-      'Multidisciplinary coordination',
-      'Site supervision',
+      'Foundation and superstructure engineering',
+      'Structural documentation and coordination',
+      'Construction-stage engineering support',
     ],
   },
   experience: {
     title: 'Our Team Experience',
     intro1:
-      'Our team combines direct experience in the design and calculation of reinforced-concrete buildings with active professional roles in industrial and international projects.',
+      'The professionals collaborating under Civera combine direct experience in the design and calculation of reinforced-concrete buildings with active professional roles in industrial and international projects.',
     intro2:
-      'We deliver structural design, steel structures, connection design, foundation engineering and technical coordination across multiple sectors and project environments.',
+      'We deliver structural design, steel structures, connection design, foundation engineering and multidisciplinary technical coordination across sectors and project environments.',
     items: {
       rc: {
         title: 'Reinforced-Concrete Calculations',
         desc: 'Complete structural analysis and design of reinforced-concrete buildings including slabs, beams, columns, walls and foundation systems.',
       },
       industrial: {
-        title: 'Industrial & Energy Projects',
-        desc: 'Experience in structural design of industrial plants, equipment supports, platforms and process structures.',
+        title: 'Industrial & Multidisciplinary Projects',
+        desc: 'Experience in structural, mechanical and piping engineering for industrial plants, equipment supports, platforms and process structures.',
       },
       steel: {
         title: 'Steel Connections & Steelwork',
@@ -84,7 +88,7 @@ export default {
       },
       international: {
         title: 'International Coordination',
-        desc: 'Engineers working across Germany, Europe and Argentina under different conditions, standards and project environments.',
+        desc: 'Engineers working across Europe and Argentina under different conditions, standards and project environments.',
       },
       review: {
         title: 'Technical Review & Coordination',
@@ -93,7 +97,7 @@ export default {
     },
     strip: {
       geo: {
-        title: 'Engineers in Germany and Argentina',
+        title: 'Engineers between Europe and Argentina',
         desc: 'Working under different conditions and time zones.',
       },
       teams: {
@@ -107,20 +111,40 @@ export default {
     },
   },
   visualisation: {
-    title: 'Design & Visualisation Support',
+    title: 'Design & Visualisation',
     intro:
-      'Architectural and technical visualisation supporting residential design, engineering communication and project presentation.',
+      'Architectural and technical visualisation supporting design development, engineering communication and project presentation.',
     checklist: [
-      'Residential Design',
-      'Architectural Renders',
+      'Architectural Visualisation',
+      'Interior Visualisation',
       'Structural 3D Models',
       'Technical Visualisation',
     ],
     cards: {
-      residential: 'Residential Design',
-      renders: 'Architectural Renders',
-      model: 'Structural 3D Models',
-      technical: 'Technical Visualisation',
+      architectural: {
+        title: 'Architectural Visualisation',
+        desc: 'High-quality architectural visualisation supporting design development, client communication and project presentation.',
+        image: '',
+        alt: 'Exterior render — Office development, Norway (image pending)',
+      },
+      interior: {
+        title: 'Interior Visualisation',
+        desc: 'Interior visualisation developed to communicate spatial character, materials and design intent.',
+        image: '',
+        alt: 'Interior render — Office development, Norway (image pending)',
+      },
+      model: {
+        title: 'Structural 3D Models',
+        desc: 'Three-dimensional structural modelling used to analyse structural behaviour, coordinate geometry and communicate engineering solutions.',
+        image: '/images/visualisation/03-structural-3d-model.jpg',
+        alt: 'Three-dimensional structural model of a reinforced-concrete building',
+      },
+      technical: {
+        title: 'Technical Visualisation',
+        desc: 'Structural models and technical construction information developed to clearly communicate design intent and support execution.',
+        image: '/images/visualisation/04-technical-visualisation.jpg',
+        alt: 'Reinforced-concrete transfer structure at construction stage',
+      },
     },
   },
   process: {
@@ -147,21 +171,21 @@ export default {
   },
   about: {
     title: 'About Civera',
-    p1: 'Civera Engineering is a collaborative civil and structural engineering practice providing design, calculation and technical documentation for buildings and industrial projects.',
-    p2: 'The studio combines independent reinforced-concrete building experience with industrial, structural-steel and multidisciplinary project delivery backgrounds.',
-    p3: 'Our flexible team structure allows us to assemble the appropriate specialists for each assignment while maintaining direct communication and coordinated technical delivery.',
+    p1: 'Civera Engineering is a collaborative engineering practice focused on structural, civil and multidisciplinary solutions for buildings and industrial projects.',
+    p2: 'Our work combines structural analysis, practical design and clear technical documentation, covering reinforced-concrete and steel structures, foundations and engineering support throughout project development and construction.',
+    p3: 'Civera brings together professionals with previous experience in residential building design and industrial projects across civil, structural, mechanical and piping disciplines. Our approach combines technical rigour, constructability and close coordination with architects, contractors and other engineering disciplines.',
   },
   contact: {
     aboutTitle: 'About Civera',
     aboutText:
-      'Civera Engineering is a collaborative civil and structural engineering practice providing design, calculations and technical documentation for buildings and industrial projects.',
+      'Civera Engineering is a collaborative engineering practice focused on structural, civil and multidisciplinary solutions for buildings and industrial projects.',
     aboutText2:
-      'The studio combines independent reinforced-concrete building experience with the industrial, structural-steel and international project-delivery background of its engineering professionals.',
+      'Our work combines structural analysis, practical design and clear technical documentation across reinforced-concrete and steel structures, foundations and engineering support.',
     aboutText3:
-      'Our flexible team structure allows us to assemble the appropriate specialists for each assignment while maintaining direct communication and coordinated technical delivery.',
+      'Our approach combines technical rigour, constructability and close coordination with architects, contractors and other engineering disciplines.',
     formTitle: 'Discuss Your Project',
     formIntro:
-      'Tell us about your project, required deliverables and expected programme. We will review the information and propose an appropriate engineering scope.',
+      'Tell us about your project and requirements. We will review the available information and propose an appropriate engineering scope.',
     fields: {
       name: 'Name',
       email: 'Email',
@@ -189,6 +213,8 @@ export default {
     email: 'info@civera.engineering',
     linkedin: 'LinkedIn',
     location: 'Operating internationally',
+    operatingTitle: 'Operating internationally',
+    operatingText: 'Based between Europe and Argentina, supporting projects across international markets.',
     validation: {
       required: 'This field is required.',
       email: 'Please enter a valid email address.',
@@ -197,7 +223,7 @@ export default {
     },
   },
   footer: {
-    tagline: 'Structural engineering for buildings and industrial projects.',
+    tagline: 'Structural and multidisciplinary engineering for buildings and industrial projects.',
     navTitle: 'Navigate',
     contactTitle: 'Contact',
     legal: 'Legal Notice',
@@ -208,42 +234,31 @@ export default {
     breadcrumbHome: 'Home',
     breadcrumbProjects: 'Projects',
     category: 'Project category',
+    previousExperienceNote:
+      'This project forms part of the previous professional experience of the engineering team now operating under Civera.',
     keyInfoTitle: 'Key Project Information',
     keyInfo: {
+      name: 'Project name',
       type: 'Project type',
       location: 'Location',
+      detailedLocation: 'Detailed location',
       status: 'Status',
-      levels: 'Number of levels',
-      area: 'Approximate area',
+      year: 'Year',
+      period: 'Project period',
+      levels: 'Levels',
+      floorDimensions: 'Approximate floor dimensions',
+      typicalFloorArea: 'Typical floor area',
+      area: 'Approximate structural floor area',
+      residentialLayout: 'Residential layout',
+      elevators: 'Elevators',
+      software: 'Software',
       structural: 'Structural system',
       foundation: 'Foundation system',
-      scope: 'Scope of services',
-      software: 'Software',
-      year: 'Year',
     },
     overviewTitle: 'Project Overview',
-    overview:
-      'This project involved the structural development of a multi-storey reinforced-concrete residential building, including foundation design, structural modelling, technical documentation and multidisciplinary coordination.',
-    overviewNote: 'Final project-specific information will be inserted after technical review.',
     scopeTitle: 'Scope of Services',
-    scopeItems: [
-      'Structural concept development',
-      'Structural analysis and design',
-      'Reinforced-concrete structural modelling',
-      'Foundation design',
-      'Reinforcement design',
-      'Structural drawings',
-      'Multidisciplinary coordination',
-      'Technical review',
-      'Construction-stage support',
-      'Site supervision, where applicable',
-    ],
     challengeTitle: 'Engineering Challenge and Approach',
-    challenge1:
-      'The structural design required coordination between the architectural layout, the reinforced-concrete framing system and the selected foundation solution.',
-    challenge2:
-      'The engineering approach focused on structural efficiency, constructability, clear technical documentation and coordination during execution.',
-    galleryTitle: 'Technical Image Gallery',
+    galleryTitle: 'Image Gallery',
     galleryCategories: {
       completed: 'Completed Building',
       construction: 'Construction Progress',
@@ -255,10 +270,6 @@ export default {
       details: 'Technical Details',
     },
     civeraTitle: 'Civera Scope',
-    civera1:
-      'The project was developed through Franco Tocci’s previous independent engineering practice in Argentina and forms part of the professional project experience now presented by Civera Engineering.',
-    civera2:
-      'The scope included structural coordination, foundation and superstructure design, technical documentation and construction-stage support.',
     confidentialityTitle: 'Confidentiality',
     confidentiality:
       'Project information, drawings and images may be partially anonymised to protect client confidentiality and contractual information.',
@@ -268,6 +279,42 @@ export default {
     navDiscuss: 'Discuss a Similar Project',
     placeholder: '[Information to be provided]',
     imagePlaceholder: 'Image placeholder',
+  },
+  legal: {
+    title: 'Legal Notice',
+    p1: 'CIVERA is an engineering and technical design practice focused on structural, civil and multidisciplinary engineering services.',
+    p2: 'This website presents CIVERA’s services, technical capabilities, design work and the previous professional experience of the professionals currently collaborating under the CIVERA name.',
+    p3: 'Project information and technical content presented on this website are provided for general informational and portfolio purposes. They do not constitute project-specific engineering advice and do not replace calculations, technical documentation or professional assessment prepared specifically for a particular project.',
+    p4: 'Unless otherwise stated, website content, text, graphics and original visual material may not be reproduced, modified or used commercially without prior authorisation from the relevant rights holder.',
+    p5: 'Official contact information is provided through the email address published on this website.',
+    temporaryNote:
+      'CIVERA is not yet formally registered as a company. Corporate registration data (registration number, VAT ID, managing director, registered address) will be added once formal registration is completed.',
+  },
+  privacy: {
+    title: 'Privacy Policy',
+    intro:
+      'CIVERA respects the privacy of users visiting this website and processes personal information only where necessary to respond to enquiries and evaluate potential engineering projects or business relationships.',
+    contactFormTitle: 'Contact form',
+    contactFormText:
+      'When a user contacts CIVERA through the website, information such as name, company, email address, country, project information, message and voluntarily uploaded documents may be processed for the purpose of reviewing and responding to the enquiry.',
+    useOfInformationTitle: 'Use of information',
+    useOfInformationText:
+      'Information submitted through the website will be used only in connection with the corresponding enquiry, potential project or business communication and will not be sold or used for unrelated marketing purposes.',
+    fileUploadsTitle: 'File uploads',
+    fileUploadsText:
+      'Documents voluntarily submitted through the project enquiry form are used solely to evaluate and respond to the corresponding enquiry. Users should avoid submitting unnecessary personal, sensitive or confidential information.',
+    retentionTitle: 'Data retention',
+    retentionText:
+      'Personal information will be retained only for as long as reasonably necessary to respond to enquiries, evaluate potential projects and manage relevant business communications.',
+    providersTitle: 'Service providers',
+    providersText:
+      'Hosting, email and form-processing providers may process limited technical or contact information where necessary to operate the website and provide these services.',
+    userRequestsTitle: 'User requests',
+    userRequestsText:
+      'Users may request access to, correction of or deletion of personal information they have submitted by contacting CIVERA through the official email address published on the website.',
+    updatesTitle: 'Future updates',
+    updatesText:
+      'This Privacy Policy may be updated as CIVERA’s legal structure, website functionality and service providers evolve.',
   },
   common: {
     skipToContent: 'Skip to main content',
