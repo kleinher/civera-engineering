@@ -11,7 +11,6 @@ const cards = [
   { key: 'architectural' as const, variant: 'light' as const },
   { key: 'interior' as const, variant: 'light' as const },
   { key: 'model' as const, variant: 'blueprint' as const },
-  { key: 'technical' as const, variant: 'blueprint' as const },
 ];
 ---
 <section id="visualisation" class="visualisation">
@@ -63,8 +62,8 @@ const cards = [
   @media (min-width: 40rem) {
     .cards { grid-template-columns: repeat(2, 1fr); gap: 1.25rem; }
   }
-  @media (min-width: 72rem) {
-    .cards { grid-template-columns: repeat(4, 1fr); gap: 1.25rem; }
+  @media (min-width: 60rem) {
+    .cards { grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
   }
   .vis-card {
     margin: 0;
