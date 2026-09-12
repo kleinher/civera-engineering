@@ -210,7 +210,7 @@ export default {
     success: 'Thank you. Your enquiry has been received. We will get back to you shortly.',
     error: 'There was an error submitting the form. Please review the highlighted fields.',
     getInTouchTitle: 'Get in Touch',
-    email: 'info@civera.engineering',
+    email: 'info@civeraeng.com',
     linkedin: 'LinkedIn',
     location: 'Operating internationally',
     operatingTitle: 'Operating internationally',

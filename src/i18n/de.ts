@@ -221,7 +221,7 @@ const dict: Dictionary = {
     success: 'Vielen Dank. Ihre Anfrage ist eingegangen. Wir melden uns in Kürze.',
     error: 'Beim Senden ist ein Fehler aufgetreten. Bitte überprüfen Sie die markierten Felder.',
     getInTouchTitle: 'Kontakt',
-    email: 'info@civera.engineering',
+    email: 'info@civeraeng.com',
     linkedin: 'LinkedIn',
     location: 'Internationale Tätigkeit',
     operatingTitle: 'Internationale Tätigkeit',

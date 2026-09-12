@@ -1,6 +1,7 @@
 ---
 import type { Locale } from '../../i18n/types';
 import { useTranslations, localisePath } from '../../i18n';
+import { localizeProject } from '../../i18n/project';
 import Icon from '../Icon.astro';
 import PlaceholderImage from '../PlaceholderImage.astro';
 import { getCollection } from 'astro:content';
@@ -9,7 +10,9 @@ interface Props { locale: Locale; }
 const { locale } = Astro.props;
 const t = useTranslations(locale);
 
-const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+const projects = (await getCollection('projects'))
+  .sort((a, b) => a.data.order - b.data.order)
+  .map((p) => ({ ...p, data: localizeProject(p.data, locale) }));
 ---
 <section id="projects" class="projects">
   <div class="container-page">

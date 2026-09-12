@@ -2,6 +2,7 @@
 import type { CollectionEntry } from 'astro:content';
 import type { Locale } from '../i18n/types';
 import { useTranslations, localisePath } from '../i18n';
+import { localizeProject } from '../i18n/project';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Icon from './Icon.astro';
 import PlaceholderImage from './PlaceholderImage.astro';
@@ -18,7 +19,10 @@ const t = useTranslations(locale);
 const home = localisePath('/', locale);
 const projectHref = (slug: string) => localisePath(`/projects/${slug}/`, locale);
 
-const info = entry.data.keyInfo;
+const data = localizeProject(entry.data, locale);
+const prevData = prev ? localizeProject(prev.data, locale) : undefined;
+const nextData = next ? localizeProject(next.data, locale) : undefined;
+const info = data.keyInfo;
 const keyInfoRows = [
   { key: 'name', value: info.name },
   { key: 'type', value: info.type },
@@ -41,17 +45,17 @@ const systemRows = [
   { key: 'foundation', value: info.foundation },
 ] as const;
 
-const overview = entry.data.overview ?? [];
-const scopeItems = entry.data.scopeItems ?? [];
-const challenge = entry.data.challenge ?? [];
-const civeraScope = entry.data.civeraScope ?? [];
+const overview = data.overview ?? [];
+const scopeItems = data.scopeItems ?? [];
+const challenge = data.challenge ?? [];
+const civeraScope = data.civeraScope ?? [];
 
-const gallery = entry.data.gallery ?? [];
-const heroSrc = entry.data.heroImage ?? entry.data.cover;
+const gallery = data.gallery ?? [];
+const heroSrc = data.heroImage ?? data.cover;
 
 const homeBase = home;
 ---
-<BaseLayout locale={locale} title={`${entry.data.title} — Civera Engineering`} description={entry.data.excerpt} homeBase={homeBase}>
+<BaseLayout locale={locale} title={`${data.title} — Civera Engineering`} description={data.excerpt} homeBase={homeBase}>
   <article class="project">
     <!-- Project Hero -->
     <header class="p-hero">
@@ -59,7 +63,7 @@ const homeBase = home;
         {heroSrc ? (
           <img src={heroSrc} alt="" loading="eager" />
         ) : (
-          <PlaceholderImage label={entry.data.title} ratio="16 / 6" variant="dark" />
+          <PlaceholderImage label={data.title} ratio="16 / 6" variant="dark" />
         )}
       </div>
       <div class="p-hero-overlay" aria-hidden="true"></div>
@@ -68,13 +72,13 @@ const homeBase = home;
           <ol>
             <li><a href={home}>{t.project.breadcrumbHome}</a></li>
             <li><a href={`${home}#projects`}>{t.project.breadcrumbProjects}</a></li>
-            <li aria-current="page">{entry.data.title}</li>
+            <li aria-current="page">{data.title}</li>
           </ol>
         </nav>
-        <p class="eyebrow light">{entry.data.category}</p>
-        <h1>{entry.data.title}</h1>
-        {entry.data.subtitle && <p class="subtitle">{entry.data.subtitle}</p>}
-        <p class="lead">{entry.data.excerpt}</p>
+        <p class="eyebrow light">{data.category}</p>
+        <h1>{data.title}</h1>
+        {data.subtitle && <p class="subtitle">{data.subtitle}</p>}
+        <p class="lead">{data.excerpt}</p>
       </div>
     </header>
 
@@ -184,12 +188,12 @@ const homeBase = home;
     <!-- Project navigation -->
     <nav class="container-page p-nav" aria-label="Project navigation">
       <div class="p-nav-inner">
-        {prev ? (
-          <a href={projectHref(prev.data.slug)} class="nav-btn nav-prev">
+        {prevData ? (
+          <a href={projectHref(prevData.slug)} class="nav-btn nav-prev">
             <Icon name="arrow-left" size={16} strokeWidth={1.8} />
             <span>
               <span class="nav-label">{t.project.navPrev}</span>
-              <span class="nav-title">{prev.data.title}</span>
+              <span class="nav-title">{prevData.title}</span>
             </span>
           </a>
         ) : <span></span>}
@@ -198,11 +202,11 @@ const homeBase = home;
           <span class="nav-label">{t.project.navBack}</span>
         </a>
 
-        {next ? (
-          <a href={projectHref(next.data.slug)} class="nav-btn nav-next">
+        {nextData ? (
+          <a href={projectHref(nextData.slug)} class="nav-btn nav-next">
             <span>
               <span class="nav-label">{t.project.navNext}</span>
-              <span class="nav-title">{next.data.title}</span>
+              <span class="nav-title">{nextData.title}</span>
             </span>
             <Icon name="arrow-right" size={16} strokeWidth={1.8} />
           </a>
