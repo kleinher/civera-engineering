@@ -22,16 +22,10 @@ const projectTypeKeys = [
     <div class="col form-col">
       <h2 class="col-title">{t.contact.formTitle}</h2>
       <p class="intro">{t.contact.formIntro}</p>
-      <!--
-        Backend integration:
-        - Formspree: set action="https://formspree.io/f/xxxxxxx" and method="POST"
-        - Netlify Forms: add `data-netlify="true" netlify-honeypot="bot-field"` and keep name attributes.
-        - Web3Forms: set action="https://api.web3forms.com/submit" and include a hidden <input name="access_key" value="XXX" />.
-      -->
       <form
         class="form"
         data-contact-form
-        action="#"
+        action="https://formspree.io/f/mjyvqwvn"
         method="POST"
         enctype="multipart/form-data"
         novalidate
@@ -121,7 +115,7 @@ const projectTypeKeys = [
           </a>
         </li>
         <li>
-          <a href="#" aria-label="LinkedIn placeholder">
+          <a href="https://www.linkedin.com/company/civera-engineering" target="_blank" rel="noopener noreferrer" aria-label="Civera Engineering on LinkedIn">
             <Icon name="linkedin" size={18} strokeWidth={1.5} />
             <span>{t.contact.linkedin}</span>
           </a>
@@ -204,13 +198,15 @@ const projectTypeKeys = [
       });
     }
 
-    form.addEventListener('submit', (e) => {
+    const submitBtn = form.querySelector('button[type="submit"]');
+
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      let valid = true;
 
       const hp = form.querySelector('input[name="bot-field"]');
       if (hp && hp.value) return;
 
+      let valid = true;
       const requiredFields = form.querySelectorAll('[required]');
       requiredFields.forEach((f) => {
         clearError(f);
@@ -236,10 +232,31 @@ const projectTypeKeys = [
         return;
       }
 
-      // Submission placeholder — backend integration TBD (Formspree / Netlify Forms / Web3Forms).
-      if (successEl) successEl.removeAttribute('hidden');
-      form.reset();
-      if (uploadTextEl) uploadTextEl.textContent = defaultUploadText;
+      const originalLabel = submitBtn ? submitBtn.innerHTML : '';
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.setAttribute('aria-busy', 'true');
+      }
+
+      try {
+        const response = await fetch(form.action, {
+          method: form.method,
+          body: new FormData(form),
+          headers: { Accept: 'application/json' },
+        });
+        if (!response.ok) throw new Error('Submission failed');
+        if (successEl) successEl.removeAttribute('hidden');
+        form.reset();
+        if (uploadTextEl) uploadTextEl.textContent = defaultUploadText;
+      } catch (err) {
+        if (errorEl) errorEl.removeAttribute('hidden');
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.removeAttribute('aria-busy');
+          submitBtn.innerHTML = originalLabel;
+        }
+      }
     });
   }
 </script>
