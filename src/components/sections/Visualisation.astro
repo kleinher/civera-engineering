@@ -1,6 +1,7 @@
 ---
 import type { Locale } from '../../i18n/types';
 import { useTranslations } from '../../i18n';
+import Icon from '../Icon.astro';
 import PlaceholderImage from '../PlaceholderImage.astro';
 
 interface Props { locale: Locale; }
@@ -22,13 +23,27 @@ const cards = [
         const card = t.visualisation.cards[c.key];
         return (
           <figure class="vis-card">
-            <div class="media">
-              {card.image ? (
+            {card.image ? (
+              <button
+                type="button"
+                class="media media-trigger"
+                data-vis-trigger
+                data-src={card.image}
+                data-alt={card.alt}
+                data-title={card.title}
+                data-desc={card.desc}
+                aria-label={`${card.title} — ${t.common.next.toString().length > 0 ? '' : ''}`}
+              >
                 <img src={card.image} alt={card.alt} loading="lazy" />
-              ) : (
+                <span class="zoom" aria-hidden="true">
+                  <Icon name="arrow-right" size={16} strokeWidth={2} />
+                </span>
+              </button>
+            ) : (
+              <div class="media">
                 <PlaceholderImage label={card.title} ratio="4 / 3" variant={c.variant} />
-              )}
-            </div>
+              </div>
+            )}
             <figcaption>
               <span class="cap-title">{card.title}</span>
               <span class="cap-desc">{card.desc}</span>
@@ -38,7 +53,81 @@ const cards = [
       })}
     </div>
   </div>
+
+  <dialog class="vis-lightbox" data-vis-lightbox aria-label="Image viewer">
+    <button type="button" class="lb-close" data-vis-close aria-label={t.common.close}>
+      <Icon name="close" size={22} />
+    </button>
+    <button type="button" class="lb-nav lb-prev" data-vis-prev aria-label={t.common.previous}>
+      <Icon name="arrow-left" size={22} />
+    </button>
+    <div class="lb-frame">
+      <img data-vis-image src="" alt="" />
+    </div>
+    <div class="lb-caption">
+      <span class="lb-title" data-vis-title></span>
+      <span class="lb-desc" data-vis-desc></span>
+    </div>
+    <button type="button" class="lb-nav lb-next" data-vis-next aria-label={t.common.next}>
+      <Icon name="arrow-right" size={22} />
+    </button>
+  </dialog>
 </section>
+
+<script>
+  const dialog = document.querySelector('[data-vis-lightbox]');
+  const triggers = Array.from(document.querySelectorAll('[data-vis-trigger]'));
+  if (dialog && triggers.length) {
+    const imgEl = dialog.querySelector('[data-vis-image]');
+    const titleEl = dialog.querySelector('[data-vis-title]');
+    const descEl = dialog.querySelector('[data-vis-desc]');
+    const closeBtn = dialog.querySelector('[data-vis-close]');
+    const prevBtn = dialog.querySelector('[data-vis-prev]');
+    const nextBtn = dialog.querySelector('[data-vis-next]');
+    let currentIndex = 0;
+
+    function render(i) {
+      currentIndex = ((i % triggers.length) + triggers.length) % triggers.length;
+      const trigger = triggers[currentIndex];
+      const src = trigger.getAttribute('data-src') || '';
+      const alt = trigger.getAttribute('data-alt') || '';
+      const title = trigger.getAttribute('data-title') || '';
+      const desc = trigger.getAttribute('data-desc') || '';
+      if (imgEl) { imgEl.src = src; imgEl.alt = alt; }
+      if (titleEl) titleEl.textContent = title;
+      if (descEl) descEl.textContent = desc;
+    }
+
+    function open(i) {
+      render(i);
+      if (typeof dialog.showModal === 'function') dialog.showModal();
+      else dialog.setAttribute('open', '');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function close() {
+      if (typeof dialog.close === 'function') dialog.close();
+      else dialog.removeAttribute('open');
+      document.body.style.overflow = '';
+    }
+
+    triggers.forEach((btn, i) => btn.addEventListener('click', () => open(i)));
+    closeBtn && closeBtn.addEventListener('click', close);
+    prevBtn && prevBtn.addEventListener('click', () => render(currentIndex - 1));
+    nextBtn && nextBtn.addEventListener('click', () => render(currentIndex + 1));
+
+    dialog.addEventListener('click', (e) => {
+      if (e.target === dialog) close();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (!dialog.hasAttribute('open')) return;
+      if (e.key === 'Escape') close();
+      if (e.key === 'ArrowLeft') render(currentIndex - 1);
+      if (e.key === 'ArrowRight') render(currentIndex + 1);
+    });
+  }
+</script>
 
 <style>
   .visualisation {
@@ -79,25 +168,42 @@ const cards = [
     position: relative;
     aspect-ratio: 4 / 3;
     overflow: hidden;
+    display: block;
+    width: 100%;
+  }
+  .media-trigger {
+    background: transparent;
+    padding: 0;
+    border: 0;
+    cursor: zoom-in;
+    text-align: left;
   }
   .media img {
     display: block;
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transition: transform .4s ease;
   }
-  .badge {
+  .media-trigger:hover img,
+  .media-trigger:focus-visible img { transform: scale(1.04); }
+  .zoom {
     position: absolute;
-    top: 0.75rem;
-    left: 0.75rem;
-    background: var(--color-brass-500);
+    bottom: 0.75rem;
+    right: 0.75rem;
+    width: 32px;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgb(5 18 41 / 0.72);
     color: var(--color-white);
-    font-size: 0.625rem;
-    font-weight: 700;
-    letter-spacing: var(--tracking-widest);
-    text-transform: uppercase;
-    padding: 4px 8px;
+    opacity: 0;
+    transition: opacity .2s ease;
+    pointer-events: none;
   }
+  .media-trigger:hover .zoom,
+  .media-trigger:focus-visible .zoom { opacity: 1; }
   figcaption {
     padding: 0.85rem 1rem 1rem;
     border-top: 1px solid var(--color-line-200);
@@ -117,5 +223,91 @@ const cards = [
     font-size: 0.75rem;
     line-height: 1.55;
     color: var(--color-ink-500);
+  }
+
+  /* Lightbox */
+  .vis-lightbox {
+    border: 0;
+    padding: 0;
+    background: transparent;
+    max-width: 100%;
+    max-height: 100%;
+    width: 100%;
+    height: 100%;
+    inset: 0;
+  }
+  .vis-lightbox::backdrop { background: rgba(5, 18, 41, 0.92); }
+  .vis-lightbox[open] {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-template-rows: 1fr auto;
+    align-items: center;
+    justify-items: center;
+    padding: 1rem;
+    color: var(--color-white);
+  }
+  .vis-lightbox .lb-close {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    background: transparent;
+    color: var(--color-white);
+    border: 1px solid rgb(255 255 255 / 0.3);
+    width: 40px;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 2;
+  }
+  .vis-lightbox .lb-nav {
+    background: transparent;
+    color: var(--color-white);
+    border: 1px solid rgb(255 255 255 / 0.3);
+    width: 40px;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 2;
+  }
+  .vis-lightbox .lb-nav:hover, .vis-lightbox .lb-close:hover { background: rgb(255 255 255 / 0.1); }
+  .vis-lightbox .lb-frame {
+    max-width: min(1200px, 92vw);
+    max-height: 78vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .vis-lightbox .lb-frame img {
+    max-width: 100%;
+    max-height: 78vh;
+    object-fit: contain;
+    display: block;
+  }
+  .vis-lightbox .lb-caption {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 6px;
+    margin: 0.85rem 0 0;
+    max-width: 62ch;
+  }
+  .vis-lightbox .lb-title {
+    font-size: 0.75rem;
+    letter-spacing: var(--tracking-widest);
+    text-transform: uppercase;
+    color: var(--color-white);
+    font-weight: 700;
+  }
+  .vis-lightbox .lb-desc {
+    font-size: 0.8125rem;
+    line-height: 1.55;
+    color: rgb(255 255 255 / 0.8);
   }
 </style>
