@@ -218,6 +218,7 @@ const dict: Dictionary = {
       other: 'Sonstiges',
     },
     submit: 'Projektanfrage senden',
+    attachmentsNote: 'Um Pläne oder technische Unterlagen (PDF, DWG, IFC, ZIP…) zu übermitteln, senden Sie diese nach dem Absenden des Formulars per E-Mail an info@civeraeng.com.',
     success: 'Vielen Dank. Ihre Anfrage ist eingegangen. Wir melden uns in Kürze.',
     error: 'Beim Senden ist ein Fehler aufgetreten. Bitte überprüfen Sie die markierten Felder.',
     getInTouchTitle: 'Kontakt',

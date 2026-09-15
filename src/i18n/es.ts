@@ -218,6 +218,7 @@ const dict: Dictionary = {
       other: 'Otro',
     },
     submit: 'Enviar consulta',
+    attachmentsNote: 'Para compartir planos o documentación técnica (PDF, DWG, IFC, ZIP…), envíelos por email a info@civeraeng.com luego de enviar este formulario.',
     success: 'Gracias. Su consulta fue recibida. Le responderemos a la brevedad.',
     error: 'Ocurrió un error al enviar el formulario. Revise los campos marcados.',
     getInTouchTitle: 'Contacto',

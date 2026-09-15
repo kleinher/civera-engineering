@@ -207,6 +207,7 @@ export default {
       other: 'Other',
     },
     submit: 'Send Project Enquiry',
+    attachmentsNote: 'To share plans or technical documents (PDF, DWG, IFC, ZIP…), email them to info@civeraeng.com after submitting this form.',
     success: 'Thank you. Your enquiry has been received. We will get back to you shortly.',
     error: 'There was an error submitting the form. Please review the highlighted fields.',
     getInTouchTitle: 'Get in Touch',
